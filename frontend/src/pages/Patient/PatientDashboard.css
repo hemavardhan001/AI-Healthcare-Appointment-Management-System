@@ -1,216 +1,359 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+/* =========================================
+   Global Reset
+========================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.dashboard{
-    display:flex;
-    min-height:100vh;
-    background:#f4f7fc;
-    font-family:Arial,sans-serif;
+
+/* =========================================
+   Main Dashboard
+========================================= */
+
+.dashboard {
+  display: flex;
+  min-height: 100vh;
+  background: #f4f7fc;
+  font-family: Arial, sans-serif;
 }
 
-.sidebar{
-    width:250px;
-    background:#1f3c88;
-    color:white;
-    padding:30px 20px;
-    display:flex;
-    flex-direction:column;
+
+/* =========================================
+   Sidebar
+========================================= */
+
+.sidebar {
+  width: 250px;
+  min-height: 100vh;
+  background: #1f3c88;
+  color: white;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
 }
 
-.sidebar h2{
-    text-align:center;
-    margin-bottom:40px;
+.sidebar h2 {
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 21px;
 }
 
-.sidebar ul{
-    list-style:none;
-    flex:1;
+.sidebar ul {
+  list-style: none;
+  flex: 1;
 }
 
-.sidebar li{
-    padding:15px;
-    cursor:pointer;
-    border-radius:8px;
-    transition:.3s;
-    margin-bottom:10px;
+.sidebar li {
+  padding: 15px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: 0.3s;
+  margin-bottom: 10px;
+  font-size: 15px;
 }
 
-.sidebar li:hover{
-    background:#325dbd;
+.sidebar li:hover {
+  background: #325dbd;
 }
 
-.sidebar button{
-    padding:12px;
-    background:#ff4d4d;
-    color:white;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-    font-size:16px;
+.sidebar li.active {
+  background: #325dbd;
+  font-weight: bold;
 }
 
-.sidebar button:hover{
-    background:#e60000;
+.sidebar button {
+  padding: 12px;
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.3s;
 }
 
-.content{
-    flex:1;
-    padding:40px;
+.sidebar button:hover {
+  background: #e60000;
 }
 
-.welcome-card{
-    background:white;
-    padding:30px;
-    border-radius:15px;
-    box-shadow:0 5px 15px rgba(0,0,0,.1);
+
+/* =========================================
+   Main Content
+========================================= */
+
+.content {
+  flex: 1;
+  padding: 40px;
+  min-width: 0;
 }
 
-.cards{
-    margin-top:35px;
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-    gap:25px;
+
+/* =========================================
+   Welcome Card
+========================================= */
+
+.welcome-card {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-.card{
-    background:white;
-    padding:30px;
-    border-radius:15px;
-    text-align:center;
-    box-shadow:0 5px 15px rgba(0,0,0,.1);
-    transition:.3s;
+.welcome-card h1 {
+  color: #1f3c88;
+  margin-bottom: 10px;
 }
 
-.card:hover{
-    transform:translateY(-8px);
+.welcome-card p {
+  color: #666;
 }
 
-.card h2{
-    font-size:45px;
-    margin-bottom:15px;
-}
 
-.card h3{
-    margin-bottom:10px;
-}
+/* =========================================
+   Cards
+========================================= */
+
 .cards {
-    margin-top: 30px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
-    gap: 20px;
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(220px, 1fr)
+  );
+  gap: 20px;
+}
+
+.card {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
 }
 
 .card h1 {
-    font-size: 40px;
-    color: #1f3c88;
-    margin-top: 15px;
+  font-size: 40px;
+  color: #1f3c88;
+  margin-top: 15px;
 }
 
+.card h2 {
+  font-size: 45px;
+  margin-bottom: 15px;
+}
+
+.card h3 {
+  margin-bottom: 10px;
+}
+
+
+/* =========================================
+   Tables
+========================================= */
+
 table {
-    width: 100%;
+  width: 100%;
+  border-collapse: collapse;
 }
 
 table th,
 table td {
-    padding: 12px;
-    border-bottom: 1px solid #ddd;
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
 }
 
 table th {
-    background: #f4f7fc;
+  background: #f4f7fc;
 }
 
 table tr:hover {
-    background: #f8f9ff;
-}
-.doctor-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-    gap:25px;
-    margin-top:25px;
+  background: #f8f9ff;
 }
 
-.doctor-card{
-    background:white;
-    padding:25px;
-    border-radius:15px;
-    box-shadow:0 4px 15px rgba(0,0,0,.1);
-    text-align:center;
-    transition:.3s;
+
+/* =========================================
+   Doctor Grid
+========================================= */
+
+.doctor-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(280px, 1fr)
+  );
+  gap: 25px;
+  margin-top: 25px;
 }
 
-.doctor-card:hover{
-    transform:translateY(-8px);
+.doctor-card {
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: 0.3s;
 }
 
-.doctor-avatar{
-    font-size:70px;
-    margin-bottom:15px;
+.doctor-card:hover {
+  transform: translateY(-5px);
 }
 
-.doctor-card h3{
-    color:#1f3c88;
-    margin-bottom:15px;
+.doctor-avatar {
+  font-size: 70px;
+  margin-bottom: 15px;
 }
 
-.doctor-card p{
-    margin:10px 0;
-    color:#555;
+.doctor-card h3 {
+  color: #1f3c88;
+  margin-bottom: 15px;
 }
 
-.doctor-card button{
-    margin-top:15px;
-    width:100%;
-    padding:12px;
-    background:#1f3c88;
-    color:white;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-    font-size:16px;
+.doctor-card p {
+  margin: 10px 0;
+  color: #555;
 }
 
-.doctor-card button:hover{
-    background:#325dbd;
-}
-.profile-card{
-    width:400px;
-    margin:auto;
-    background:white;
-    padding:30px;
-    border-radius:15px;
-    text-align:center;
-    box-shadow:0 5px 15px rgba(0,0,0,.1);
-}
-
-.profile-avatar{
-    font-size:80px;
-    margin-bottom:20px;
+.doctor-card button {
+  margin-top: 15px;
+  width: 100%;
+  padding: 12px;
+  background: #1f3c88;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.3s;
 }
 
-.profile-card h3{
-    color:#1f3c88;
-    margin-bottom:20px;
+.doctor-card button:hover {
+  background: #325dbd;
 }
 
-.profile-card p{
-    margin:15px 0;
-    color:#555;
+
+/* =========================================
+   Profile
+========================================= */
+
+.profile-card {
+  width: 400px;
+  max-width: 100%;
+  margin: auto;
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-.profile-card button{
-    margin-top:20px;
-    padding:12px 25px;
-    background:#1f3c88;
-    color:white;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
+.profile-avatar {
+  font-size: 80px;
+  margin-bottom: 20px;
 }
 
-.profile-card button:hover{
-    background:#325dbd;
+.profile-card h3 {
+  color: #1f3c88;
+  margin-bottom: 20px;
+}
+
+.profile-card p {
+  margin: 15px 0;
+  color: #555;
+}
+
+.profile-card button {
+  margin-top: 20px;
+  padding: 12px 25px;
+  background: #1f3c88;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.profile-card button:hover {
+  background: #325dbd;
+}
+
+
+/* =========================================
+   Mobile Responsive
+========================================= */
+
+@media (max-width: 768px) {
+  .dashboard {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    min-height: auto;
+    padding: 20px;
+  }
+
+  .sidebar h2 {
+    margin-bottom: 20px;
+  }
+
+  .sidebar ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .sidebar li {
+    margin-bottom: 0;
+    flex: 1 1 140px;
+    text-align: center;
+  }
+
+  .sidebar button {
+    margin-top: 15px;
+  }
+
+  .content {
+    padding: 20px;
+  }
+
+  .welcome-card {
+    padding: 20px;
+  }
+}
+
+
+/* =========================================
+   Small Mobile Screens
+========================================= */
+
+@media (max-width: 480px) {
+  .content {
+    padding: 15px;
+  }
+
+  .sidebar {
+    padding: 15px;
+  }
+
+  .sidebar li {
+    flex: 1 1 100%;
+  }
+
+  .card {
+    padding: 20px;
+  }
+
+  .profile-card {
+    padding: 20px;
+  }
 }

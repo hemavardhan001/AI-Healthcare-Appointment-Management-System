@@ -1,112 +1,392 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import API from "../../services/api";
+import "./DashboardHome.css";
 
 function DashboardHome() {
+  const navigate = useNavigate();
+
   const [appointments, setAppointments] = useState([]);
-  const [doctors, setDoctors] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // =======================================
+  // Get logged-in patient's name
+  // =======================================
+  const user = JSON.parse(
+    localStorage.getItem("user") || "{}"
+  );
+
+  const userName = user?.name || "Patient";
 
   useEffect(() => {
-    loadDashboard();
+    fetchAppointments();
   }, []);
 
-  const loadDashboard = async () => {
+  // =======================================
+  // Fetch logged-in patient's appointments
+  // =======================================
+  const fetchAppointments = async () => {
     try {
-      const appointmentRes = await API.get("/appointments/my");
-      setAppointments(appointmentRes.data.appointments);
+      setLoading(true);
 
-      const doctorRes = await API.get("/doctors");
-      setDoctors(doctorRes.data.doctors);
-    } catch (err) {
-      console.log(err);
+      const res = await API.get("/appointments/my");
+
+      console.log("My Appointments:", res.data);
+
+      setAppointments(
+        Array.isArray(res.data.appointments)
+          ? res.data.appointments
+          : []
+      );
+    } catch (error) {
+      console.error(
+        "Error fetching my appointments:",
+        error.response?.data || error.message
+      );
+
+      setAppointments([]);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const upcoming = appointments.filter(
-    (a) => a.status === "scheduled"
-  ).length;
+  // =======================================
+  // Check whether appointment is upcoming
+  // =======================================
+  const isUpcoming = (appointment) => {
+    if (appointment.status !== "scheduled") {
+      return false;
+    }
 
-  const completed = appointments.filter(
-    (a) => a.status === "completed"
-  ).length;
+    if (
+      !appointment.appointment_date ||
+      !appointment.start_time
+    ) {
+      return false;
+    }
+
+    const appointmentDateTime = new Date(
+      `${appointment.appointment_date}T${appointment.start_time}`
+    );
+
+    if (Number.isNaN(appointmentDateTime.getTime())) {
+      return false;
+    }
+
+    return appointmentDateTime >= new Date();
+  };
+
+  // =======================================
+  // Upcoming appointments
+  // =======================================
+  const upcomingAppointments = appointments
+    .filter(isUpcoming)
+    .sort((a, b) => {
+      const dateA = new Date(
+        `${a.appointment_date}T${a.start_time}`
+      );
+
+      const dateB = new Date(
+        `${b.appointment_date}T${b.start_time}`
+      );
+
+      return dateA - dateB;
+    });
+
+  // =======================================
+  // Logout
+  // =======================================
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    localStorage.removeItem("user");
+    localStorage.removeItem("userName");
+
+    navigate("/login");
+  };
 
   return (
-    <div>
-      <h2>🏠 Dashboard Overview</h2>
-      <p style={{ color: "#666", marginBottom: "20px" }}>
-        Welcome to your Healthcare Appointment Management System.
-      </p>
+    <div className="dashboard-container">
 
-      <div className="cards">
-        <div className="card">
-          <h2>📅</h2>
-          <h3>Total Appointments</h3>
-          <h1>{appointments.length}</h1>
+      {/* ==============================
+          Header
+      ============================== */}
+
+      <header className="dashboard-header">
+
+        <div>
+          <h1>Patient Dashboard</h1>
+
+          <p>
+            Welcome back, {userName} 👋
+          </p>
         </div>
 
-        <div className="card">
-          <h2>👨‍⚕️</h2>
-          <h3>Available Doctors</h3>
-          <h1>{doctors.length}</h1>
+        <button
+          className="logout-btn"
+          onClick={handleLogout}
+        >
+          Logout
+        </button>
+
+      </header>
+
+
+      {/* ==============================
+          Quick Stats
+      ============================== */}
+
+      <div className="stats-container">
+
+        {/* Appointments */}
+
+        <div
+          className="stat-card"
+          onClick={() =>
+            navigate("/patient/appointments")
+          }
+          style={{ cursor: "pointer" }}
+        >
+          <h3>📅</h3>
+
+          <p>Appointments</p>
+
+          <strong>
+            {appointments.length}
+          </strong>
         </div>
 
-        <div className="card">
-          <h2>⏳</h2>
-          <h3>Upcoming</h3>
-          <h1>{upcoming}</h1>
+
+        {/* Upcoming */}
+
+        <div
+          className="stat-card"
+          onClick={() =>
+            navigate("/patient/appointments")
+          }
+          style={{ cursor: "pointer" }}
+        >
+          <h3>⏰</h3>
+
+          <p>Upcoming</p>
+
+          <strong>
+            {upcomingAppointments.length}
+          </strong>
         </div>
 
-        <div className="card">
-          <h2>✅</h2>
-          <h3>Completed</h3>
-          <h1>{completed}</h1>
+
+        {/* Doctors */}
+
+        <div
+          className="stat-card"
+          onClick={() =>
+            navigate("/patient/doctors")
+          }
+          style={{ cursor: "pointer" }}
+        >
+          <h3>👨‍⚕️</h3>
+
+          <p>Doctors</p>
+
+          <strong>View</strong>
         </div>
+
       </div>
 
-      <div
-        style={{
-          marginTop: "35px",
-          background: "#fff",
-          padding: "20px",
-          borderRadius: "12px",
-          boxShadow: "0 2px 8px rgba(0,0,0,.1)",
-        }}
-      >
-        <h3>📌 Recent Appointments</h3>
 
-        {appointments.length === 0 ? (
-          <p>No appointments booked yet.</p>
-        ) : (
-          <table
-            style={{
-              width: "100%",
-              marginTop: "15px",
-              borderCollapse: "collapse",
-            }}
+      {/* ==============================
+          Quick Actions
+      ============================== */}
+
+      <section className="quick-actions">
+
+        <h2>Quick Actions</h2>
+
+        <div className="action-buttons">
+
+          {/* Find Doctor */}
+
+          <button
+            onClick={() =>
+              navigate("/patient/doctors")
+            }
           >
-            <thead>
-              <tr>
-                <th align="left">Doctor</th>
-                <th align="left">Date</th>
-                <th align="left">Time</th>
-                <th align="left">Status</th>
-              </tr>
-            </thead>
+            👨‍⚕️ Find a Doctor
+          </button>
 
-            <tbody>
-              {appointments.slice(0, 5).map((appt) => (
-                <tr key={appt.id}>
-                  <td>{appt.doctor_name}</td>
-                  <td>{appt.appointment_date}</td>
-                  <td>
-                    {appt.start_time} - {appt.end_time}
-                  </td>
-                  <td>{appt.status}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+
+          {/* Book Appointment */}
+
+          <button
+            onClick={() =>
+              navigate(
+                "/patient/book-appointment"
+              )
+            }
+          >
+            📅 Book Appointment
+          </button>
+
+
+          {/* My Appointments */}
+
+          <button
+            onClick={() =>
+              navigate(
+                "/patient/appointments"
+              )
+            }
+          >
+            📋 My Appointments
+          </button>
+
+
+          {/* My Profile */}
+
+          <button
+            onClick={() =>
+              navigate("/patient/profile")
+            }
+          >
+            👤 My Profile
+          </button>
+
+        </div>
+
+      </section>
+
+
+      {/* ==============================
+          Upcoming Appointments
+      ============================== */}
+
+      <section className="appointments-section">
+
+        <div className="section-header">
+
+          <h2>
+            Upcoming Appointments
+          </h2>
+
+          <button
+            className="view-all"
+            onClick={() =>
+              navigate(
+                "/patient/appointments"
+              )
+            }
+          >
+            View All
+          </button>
+
+        </div>
+
+
+        {/* ==============================
+            Loading
+        ============================== */}
+
+        {loading && (
+          <p className="message">
+            Loading appointments...
+          </p>
         )}
-      </div>
+
+
+        {/* ==============================
+            No Appointments
+        ============================== */}
+
+        {!loading &&
+          upcomingAppointments.length === 0 && (
+
+            <div className="empty-card">
+
+              <h3>
+                No upcoming appointments
+              </h3>
+
+              <p>
+                Book an appointment with a
+                doctor to get started.
+              </p>
+
+              <button
+                onClick={() =>
+                  navigate(
+                    "/patient/book-appointment"
+                  )
+                }
+              >
+                📅 Book Appointment
+              </button>
+
+            </div>
+          )}
+
+
+        {/* ==============================
+            Appointments
+        ============================== */}
+
+        {!loading &&
+          upcomingAppointments.length > 0 && (
+
+            <div className="appointment-list">
+
+              {upcomingAppointments
+                .slice(0, 3)
+                .map((appointment) => (
+
+                  <div
+                    className="appointment-card"
+                    key={appointment.id}
+                  >
+
+                    <div>
+
+                      <h3>
+                        Dr.{" "}
+                        {appointment.doctor_name ||
+                          "Doctor"}
+                      </h3>
+
+                      <p>
+                        📅{" "}
+                        {appointment.appointment_date}
+                      </p>
+
+                      <p>
+                        ⏰{" "}
+                        {appointment.start_time}
+                        {" - "}
+                        {appointment.end_time}
+                      </p>
+
+                      {appointment.specialization && (
+                        <p>
+                          🩺{" "}
+                          {appointment.specialization}
+                        </p>
+                      )}
+
+                    </div>
+
+
+                    <span className="status">
+                      {appointment.status}
+                    </span>
+
+                  </div>
+
+                ))}
+
+            </div>
+          )}
+
+      </section>
+
     </div>
   );
 }

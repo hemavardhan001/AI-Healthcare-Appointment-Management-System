@@ -1,0 +1,533 @@
+/* =========================================
+   AVAILABILITY PAGE
+========================================= */
+
+.availability-page {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.availability-header {
+    margin-bottom: 25px;
+}
+
+.availability-header h2 {
+    margin: 0 0 8px;
+    color: #1e293b;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.availability-header p {
+    margin: 0;
+    color: #64748b;
+    font-size: 15px;
+}
+
+
+/* =========================================
+   MESSAGES
+========================================= */
+
+.success-message {
+    margin-bottom: 18px;
+    padding: 12px 15px;
+
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+
+    color: #15803d;
+
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.error-message {
+    margin-bottom: 18px;
+    padding: 12px 15px;
+
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+
+    color: #dc2626;
+
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+
+/* =========================================
+   ADD / EDIT FORM CARD
+========================================= */
+
+.availability-form-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+
+    padding: 28px;
+
+    margin-bottom: 25px;
+
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.07);
+}
+
+.availability-form-card h3 {
+    margin: 0 0 22px;
+
+    color: #1e293b;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.availability-form-card form {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+
+/* =========================================
+   FORM GROUP
+========================================= */
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 7px;
+
+    color: #334155;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 11px 13px;
+
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+
+    background: #ffffff;
+    color: #1e293b;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #2563eb;
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+
+/* =========================================
+   FORM BUTTONS
+========================================= */
+
+.form-buttons {
+    grid-column: 1 / -1;
+
+    display: flex;
+    gap: 10px;
+
+    margin-top: 5px;
+}
+
+
+/* =========================================
+   SAVE / ADD BUTTON
+========================================= */
+
+.save-btn {
+    border: none;
+
+    background: #2563eb;
+    color: #ffffff;
+
+    padding: 11px 18px;
+
+    border-radius: 8px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+
+    box-shadow:
+        0 2px 5px rgba(37, 99, 235, 0.18);
+}
+
+.save-btn:hover {
+    background: #1d4ed8;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 4px 10px rgba(37, 99, 235, 0.24);
+}
+
+.save-btn:active {
+    transform: translateY(0);
+}
+
+.save-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+
+/* =========================================
+   CANCEL BUTTON
+========================================= */
+
+.cancel-btn {
+    border: 1px solid #cbd5e1;
+
+    background: #ffffff;
+    color: #475569;
+
+    padding: 11px 18px;
+
+    border-radius: 8px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.cancel-btn:hover {
+    background: #f1f5f9;
+    border-color: #94a3b8;
+}
+
+
+/* =========================================
+   AVAILABILITY LIST CARD
+========================================= */
+
+.availability-list-card {
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+
+    padding: 28px;
+
+    box-shadow:
+        0 4px 18px rgba(15, 23, 42, 0.07);
+}
+
+
+/* =========================================
+   LIST HEADER
+========================================= */
+
+.availability-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 15px;
+
+    margin-bottom: 20px;
+}
+
+.availability-list-header h3 {
+    margin: 0 0 5px;
+
+    color: #1e293b;
+    font-size: 20px;
+}
+
+.availability-info {
+    margin: 0;
+
+    color: #64748b;
+    font-size: 14px;
+}
+
+
+/* =========================================
+   COUNT
+========================================= */
+
+.availability-count {
+    min-width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #dbeafe;
+    color: #1d4ed8;
+
+    border-radius: 50%;
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+
+/* =========================================
+   AVAILABILITY LIST
+========================================= */
+
+.availability-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+
+/* =========================================
+   AVAILABILITY ITEM
+========================================= */
+
+.availability-item {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 16px 18px;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+
+    background: #f8fafc;
+
+    transition: all 0.2s ease;
+}
+
+.availability-item:hover {
+    border-color: #bfdbfe;
+
+    background: #f8fbff;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================
+   DETAILS
+========================================= */
+
+.availability-details {
+    display: flex;
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+.availability-details strong {
+    color: #1e293b;
+    font-size: 15px;
+}
+
+.availability-details span {
+    color: #64748b;
+    font-size: 14px;
+}
+
+
+/* =========================================
+   ACTION BUTTONS
+========================================= */
+
+.availability-actions {
+    display: flex;
+    gap: 8px;
+}
+
+
+/* EDIT */
+
+.edit-btn {
+    border: none;
+
+    background: #dbeafe;
+    color: #1d4ed8;
+
+    padding: 9px 14px;
+
+    border-radius: 7px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.edit-btn:hover {
+    background: #bfdbfe;
+
+    transform: translateY(-1px);
+}
+
+
+/* DELETE */
+
+.delete-btn {
+    border: none;
+
+    background: #fee2e2;
+    color: #dc2626;
+
+    padding: 9px 14px;
+
+    border-radius: 7px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.delete-btn:hover {
+    background: #fecaca;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================
+   LOADING
+========================================= */
+
+.loading-text {
+    text-align: center;
+
+    padding: 30px;
+
+    color: #64748b;
+}
+
+
+/* =========================================
+   EMPTY STATE
+========================================= */
+
+.empty-state {
+    text-align: center;
+
+    padding: 35px 20px;
+
+    border: 1px dashed #cbd5e1;
+    border-radius: 10px;
+
+    background: #f8fafc;
+}
+
+.empty-state p {
+    margin: 5px 0;
+
+    color: #64748b;
+}
+
+.empty-state p:first-child {
+    color: #334155;
+
+    font-weight: 600;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 800px) {
+
+    .availability-page {
+        padding: 20px 15px;
+    }
+
+    .availability-form-card,
+    .availability-list-card {
+        padding: 20px;
+    }
+
+    .availability-form-card form {
+        grid-template-columns: 1fr;
+    }
+
+    .form-buttons {
+        grid-column: auto;
+    }
+
+    .availability-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .availability-actions {
+        width: 100%;
+    }
+
+    .edit-btn,
+    .delete-btn {
+        flex: 1;
+    }
+}
+
+
+@media (max-width: 500px) {
+
+    .availability-list-header {
+        align-items: flex-start;
+    }
+
+    .availability-count {
+        min-width: 36px;
+        height: 36px;
+    }
+
+    .form-buttons {
+        flex-direction: column;
+    }
+
+    .save-btn,
+    .cancel-btn {
+        width: 100%;
+    }
+}

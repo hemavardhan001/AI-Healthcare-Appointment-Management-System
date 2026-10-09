@@ -1,4 +1,5 @@
 const express = require("express");
+
 const router = express.Router();
 
 const protect = require("../middleware/authMiddleware");
@@ -12,14 +13,18 @@ const {
     bookAppointment,
     getAppointments,
     getMyAppointments,
+    getMyDoctorAppointments,
     getAppointment,
     editAppointment,
     removeAppointment
 } = require("../controllers/appointmentController");
 
+
 // =======================================
-// Book Appointment (Patient)
+// BOOK APPOINTMENT
+// Patient only
 // =======================================
+
 router.post(
     "/",
     protect,
@@ -28,9 +33,12 @@ router.post(
     bookAppointment
 );
 
+
 // =======================================
-// Patient - My Appointments
+// PATIENT'S OWN APPOINTMENTS
+// GET /api/appointments/my
 // =======================================
+
 router.get(
     "/my",
     protect,
@@ -38,44 +46,78 @@ router.get(
     getMyAppointments
 );
 
+
 // =======================================
-// Admin & Doctor - All Appointments
+// DOCTOR'S OWN APPOINTMENTS
+// GET /api/appointments/doctor
+//
+// IMPORTANT:
+// This route must come before /:id
 // =======================================
+
+router.get(
+    "/doctor",
+    protect,
+    authorize("doctor"),
+    getMyDoctorAppointments
+);
+
+
+// =======================================
+// ALL APPOINTMENTS
+// Admin only
+// GET /api/appointments
+// =======================================
+
 router.get(
     "/",
     protect,
-    authorize("admin", "doctor"),
+    authorize("admin"),
     getAppointments
 );
 
+
 // =======================================
-// Get Appointment By ID
+// GET APPOINTMENT BY ID
+// Admin / Patient owner / Doctor owner
+// GET /api/appointments/:id
 // =======================================
+
 router.get(
     "/:id",
     protect,
+    authorize("patient", "doctor", "admin"),
     getAppointment
 );
 
+
 // =======================================
-// Update Appointment
+// UPDATE APPOINTMENT
+// Patient / Doctor / Admin
+// PUT /api/appointments/:id
 // =======================================
+
 router.put(
     "/:id",
     protect,
-    authorize("patient", "admin"),
+    authorize("patient", "doctor", "admin"),
     appointmentValidation,
     editAppointment
 );
 
+
 // =======================================
-// Delete Appointment
+// DELETE / CANCEL APPOINTMENT
+// Patient / Doctor / Admin
+// DELETE /api/appointments/:id
 // =======================================
+
 router.delete(
     "/:id",
     protect,
-    authorize("patient", "admin"),
+    authorize("patient", "doctor", "admin"),
     removeAppointment
 );
+
 
 module.exports = router;

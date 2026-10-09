@@ -12,27 +12,38 @@ function Login() {
   });
 
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setForm({
       ...form,
       [e.target.name]: e.target.value,
     });
+
+    setError("");
   };
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
+    setError("");
+    setLoading(true);
+
     try {
       const res = await API.post("/auth/login", form);
 
-      // Save login details
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("role", res.data.user.role);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
+      console.log("Login Response:", res.data);
 
-      // Redirect based on role
-      switch (res.data.user.role) {
+      const user = res.data.user;
+      const token = res.data.token;
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("userId", user.id);
+      localStorage.setItem("role", user.role);
+      localStorage.setItem("userName", user.name);
+      localStorage.setItem("user", JSON.stringify(user));
+
+      switch (user.role) {
         case "patient":
           navigate("/patient");
           break;
@@ -50,15 +61,31 @@ function Login() {
       }
 
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed");
+      console.error(
+        "Login Error:",
+        err.response?.data || err.message
+      );
+
+      setError(
+        err.response?.data?.message ||
+        "Login failed. Please check your email and password."
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="login-container">
-      <form className="login-card" onSubmit={handleLogin}>
+
+      <form
+        className="login-card"
+        onSubmit={handleLogin}
+      >
+
         <h2>Login</h2>
 
+        {/* Email */}
         <input
           type="email"
           name="email"
@@ -68,6 +95,7 @@ function Login() {
           required
         />
 
+        {/* Password */}
         <input
           type="password"
           name="password"
@@ -77,10 +105,41 @@ function Login() {
           required
         />
 
-        <button type="submit">Login</button>
+        {/* Forgot Password */}
+        <div style={{ textAlign: "right", marginBottom: "15px" }}>
+          <button
+            type="button"
+            onClick={() => navigate("/forgot-password")}
+            style={{
+              background: "none",
+              border: "none",
+              padding: 0,
+              color: "#007bff",
+              cursor: "pointer",
+              fontSize: "14px"
+            }}
+          >
+            Forgot Password?
+          </button>
+        </div>
 
-        {error && <p className="error">{error}</p>}
+        {/* Login Button */}
+        <button
+          type="submit"
+          disabled={loading}
+        >
+          {loading ? "Logging in..." : "Login"}
+        </button>
+
+        {/* Error */}
+        {error && (
+          <p className="error">
+            {error}
+          </p>
+        )}
+
       </form>
+
     </div>
   );
 }

@@ -6,6 +6,10 @@ const {
     deleteDoctor
 } = require('../models/doctorModel');
 
+const {
+    getDoctorByUserId
+} = require('../models/availabilityModel');
+
 // Add Doctor
 const addDoctor = async (req, res) => {
     try {
@@ -42,6 +46,7 @@ const addDoctor = async (req, res) => {
     }
 };
 
+
 // Get All Doctors
 const getDoctors = async (req, res) => {
 
@@ -65,6 +70,7 @@ const getDoctors = async (req, res) => {
     }
 
 };
+
 
 // Get Doctor By ID
 const getDoctor = async (req, res) => {
@@ -96,6 +102,40 @@ const getDoctor = async (req, res) => {
 
 };
 
+
+// Get Logged-in Doctor
+const getMyDoctor = async (req, res) => {
+
+    try {
+
+        const doctor = await getDoctorByUserId(req.user.id);
+
+        if (!doctor) {
+            return res.status(404).json({
+                success: false,
+                message: "Doctor profile not found"
+            });
+        }
+
+        res.json({
+            success: true,
+            doctor
+        });
+
+    } catch (err) {
+
+        console.error("Get my doctor error:", err);
+
+        res.status(500).json({
+            success: false,
+            message: err.message
+        });
+
+    }
+
+};
+
+
 // Update Doctor
 const editDoctor = async (req, res) => {
 
@@ -118,6 +158,7 @@ const editDoctor = async (req, res) => {
     }
 
 };
+
 
 // Delete Doctor
 const removeDoctor = async (req, res) => {
@@ -142,10 +183,12 @@ const removeDoctor = async (req, res) => {
 
 };
 
+
 module.exports = {
     addDoctor,
     getDoctors,
     getDoctor,
+    getMyDoctor,
     editDoctor,
     removeDoctor
 };

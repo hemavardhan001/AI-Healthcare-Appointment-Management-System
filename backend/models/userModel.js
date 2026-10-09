@@ -32,20 +32,55 @@ const findUserById = async (id) => {
 
     return await db.get(
         `SELECT
-            id,
-            name,
-            email,
-            phone,
-            role,
-            created_at
-         FROM users
-         WHERE id = ?`,
+            u.id,
+            u.name,
+            u.email,
+            u.phone,
+            u.role,
+            u.created_at,
+            d.id AS doctor_id,
+            d.specialization
+         FROM users u
+         LEFT JOIN doctors d
+            ON d.user_id = u.id
+         WHERE u.id = ?`,
         [id]
     );
 };
 
+// ===============================
+// Update User Profile
+// ===============================
+const updateUserProfile = async (id, user) => {
+    const db = getDB();
+
+    return await db.run(
+        `UPDATE users
+         SET
+            name = ?,
+            email = ?,
+            phone = ?
+         WHERE id = ?`,
+        [
+            user.name,
+            user.email,
+            user.phone,
+            id
+        ]
+    );
+};
+const updateUserPassword = async (id, password) => {
+    const db = getDB();
+
+    return await db.run(
+        `UPDATE users SET password = ? WHERE id = ?`,
+        [password, id]
+    );
+};
 module.exports = {
     createUser,
     findUserByEmail,
-    findUserById
+    findUserById,
+    updateUserProfile,
+    updateUserPassword
 };

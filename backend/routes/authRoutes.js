@@ -1,19 +1,47 @@
-const express = require('express');
+const express = require("express");
 
 const router = express.Router();
 
-const protect = require('../middleware/authMiddleware');
+const protect = require("../middleware/authMiddleware");
 
 const {
     register,
     login,
+    getProfile,
+    updateProfile,
+    forgotPassword
+} = require("../controllers/authController");
+
+// Register
+router.post(
+    "/register",
+    register
+);
+
+// Login
+router.post(
+    "/login",
+    login
+);
+
+// Get logged-in user profile
+router.get(
+    "/me",
+    protect,
     getProfile
-} = require('../controllers/authController');
+);
 
-router.post('/register', register);
+// Update logged-in user profile
+router.put(
+    "/profile",
+    protect,
+    updateProfile
+);
 
-router.post('/login', login);
-
-router.get('/me', protect, getProfile);
+// Forgot Password
+router.post(
+    "/forgot-password",
+    forgotPassword
+);
 
 module.exports = router;

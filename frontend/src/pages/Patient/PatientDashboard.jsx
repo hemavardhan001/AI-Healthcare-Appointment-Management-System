@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import DashboardHome from "../../components/Dashboard/DashboardHome";
 import BookAppointment from "../../components/Dashboard/BookAppointment";
@@ -11,31 +10,65 @@ import "./PatientDashboard.css";
 
 function PatientDashboard() {
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const [activePage, setActivePage] = useState("dashboard");
+  // =======================================
+  // Get logged-in user
+  // =======================================
 
-  const user = JSON.parse(localStorage.getItem("user"));
-const userName = user?.name || "Patient";
+  const user = JSON.parse(
+    localStorage.getItem("user") || "{}"
+  );
+
+  const userName = user?.name || "Patient";
+
+  // =======================================
+  // Determine current page from URL
+  // =======================================
+
+  const currentPath = location.pathname;
+
+  // =======================================
+  // Logout
+  // =======================================
 
   const handleLogout = () => {
-    localStorage.clear();
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    localStorage.removeItem("user");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("userName");
+
     navigate("/login");
   };
 
+  // =======================================
+  // Navigation helper
+  // =======================================
+
+  const goTo = (path) => {
+    navigate(path);
+  };
+
+  // =======================================
+  // Render current page
+  // =======================================
+
   const renderPage = () => {
-    switch (activePage) {
-      case "book":
+    switch (currentPath) {
+      case "/patient/book-appointment":
         return <BookAppointment />;
 
-      case "appointments":
+      case "/patient/appointments":
         return <MyAppointments />;
 
-      case "doctors":
+      case "/patient/doctors":
         return <Doctors />;
 
-      case "profile":
+      case "/patient/profile":
         return <Profile />;
 
+      case "/patient":
       default:
         return <DashboardHome />;
     }
@@ -43,61 +76,132 @@ const userName = user?.name || "Patient";
 
   return (
     <div className="dashboard">
+
+      {/* =================================
+          Sidebar
+      ================================= */}
+
       <aside className="sidebar">
+
         <h2>🏥 AI HealthCare</h2>
 
         <ul>
+
+          {/* Dashboard */}
+
           <li
-            className={activePage === "dashboard" ? "active" : ""}
-            onClick={() => setActivePage("dashboard")}
+            className={
+              currentPath === "/patient"
+                ? "active"
+                : ""
+            }
+            onClick={() => goTo("/patient")}
           >
             🏠 Dashboard
           </li>
 
+
+          {/* Book Appointment */}
+
           <li
-            className={activePage === "book" ? "active" : ""}
-            onClick={() => setActivePage("book")}
+            className={
+              currentPath === "/patient/book-appointment"
+                ? "active"
+                : ""
+            }
+            onClick={() =>
+              goTo("/patient/book-appointment")
+            }
           >
             📅 Book Appointment
           </li>
 
+
+          {/* My Appointments */}
+
           <li
-            className={activePage === "appointments" ? "active" : ""}
-            onClick={() => setActivePage("appointments")}
+            className={
+              currentPath === "/patient/appointments"
+                ? "active"
+                : ""
+            }
+            onClick={() =>
+              goTo("/patient/appointments")
+            }
           >
             📖 My Appointments
           </li>
 
+
+          {/* Doctors */}
+
           <li
-            className={activePage === "doctors" ? "active" : ""}
-            onClick={() => setActivePage("doctors")}
+            className={
+              currentPath === "/patient/doctors"
+                ? "active"
+                : ""
+            }
+            onClick={() =>
+              goTo("/patient/doctors")
+            }
           >
             👨‍⚕️ Doctors
           </li>
 
+
+          {/* Profile */}
+
           <li
-            className={activePage === "profile" ? "active" : ""}
-            onClick={() => setActivePage("profile")}
+            className={
+              currentPath === "/patient/profile"
+                ? "active"
+                : ""
+            }
+            onClick={() =>
+              goTo("/patient/profile")
+            }
           >
             👤 Profile
           </li>
+
         </ul>
 
-        <button onClick={handleLogout}>🚪 Logout</button>
+
+        {/* Logout */}
+
+        <button onClick={handleLogout}>
+          🚪 Logout
+        </button>
+
       </aside>
 
+
+      {/* =================================
+          Main Content
+      ================================= */}
+
       <main className="content">
+
         <div className="welcome-card">
-          <h1>Welcome, {userName} 👋</h1>
+
+          <h1>
+            Welcome, {userName} 👋
+          </h1>
+
           <p>
-            Manage your appointments, doctors and profile from one place.
+            Manage your appointments, doctors
+            and profile from one place.
           </p>
+
         </div>
+
 
         <div style={{ marginTop: "30px" }}>
           {renderPage()}
         </div>
+
       </main>
+
     </div>
   );
 }

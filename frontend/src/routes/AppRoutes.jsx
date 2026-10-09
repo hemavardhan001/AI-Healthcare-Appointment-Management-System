@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
+import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
 
 import PatientDashboard from "../pages/Patient/PatientDashboard";
 import DoctorDashboard from "../pages/Doctor/DoctorDashboard";
@@ -13,58 +14,163 @@ import NotFound from "../pages/NotFound/NotFound";
 import ProtectedRoute from "./ProtectedRoute";
 
 function AppRoutes() {
-    return (
-        <BrowserRouter>
-            <Routes>
+  return (
+    <BrowserRouter>
 
-                {/* Public Routes */}
+      <Routes>
 
-                <Route path="/" element={<Home />} />
+        {/* ===================================== */}
+        {/* PUBLIC ROUTES */}
+        {/* ===================================== */}
 
-                <Route path="/login" element={<Login />} />
+        <Route
+          path="/"
+          element={<Home />}
+        />
 
-                <Route path="/register" element={<Register />} />
+        <Route
+          path="/login"
+          element={<Login />}
+        />
 
-                {/* Patient */}
+        <Route
+          path="/register"
+          element={<Register />}
+        />
 
-                <Route
-                    path="/patient"
-                    element={
-                        <ProtectedRoute role="patient">
-                            <PatientDashboard />
-                        </ProtectedRoute>
-                    }
-                />
+        <Route
+          path="/forgot-password"
+          element={<ForgotPassword />}
+        />
 
-                {/* Doctor */}
 
-                <Route
-                    path="/doctor"
-                    element={
-                        <ProtectedRoute role="doctor">
-                            <DoctorDashboard />
-                        </ProtectedRoute>
-                    }
-                />
+        {/* ===================================== */}
+        {/* PATIENT ROUTES */}
+        {/* ===================================== */}
 
-                {/* Admin */}
+        <Route
+          path="/patient"
+          element={
+            <ProtectedRoute role="patient">
+              <PatientDashboard />
+            </ProtectedRoute>
+          }
+        />
 
-                <Route
-                    path="/admin"
-                    element={
-                        <ProtectedRoute role="admin">
-                            <AdminDashboard />
-                        </ProtectedRoute>
-                    }
-                />
+        <Route
+          path="/patient/book-appointment"
+          element={
+            <ProtectedRoute role="patient">
+              <PatientDashboard />
+            </ProtectedRoute>
+          }
+        />
 
-                {/* 404 */}
+        <Route
+          path="/patient/appointments"
+          element={
+            <ProtectedRoute role="patient">
+              <PatientDashboard />
+            </ProtectedRoute>
+          }
+        />
 
-                <Route path="*" element={<NotFound />} />
+        <Route
+          path="/patient/doctors"
+          element={
+            <ProtectedRoute role="patient">
+              <PatientDashboard />
+            </ProtectedRoute>
+          }
+        />
 
-            </Routes>
-        </BrowserRouter>
-    );
+        <Route
+          path="/patient/profile"
+          element={
+            <ProtectedRoute role="patient">
+              <PatientDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+
+        {/* ===================================== */}
+        {/* DOCTOR ROUTES */}
+        {/* ===================================== */}
+
+        <Route
+          path="/doctor"
+          element={
+            <ProtectedRoute role="doctor">
+              <DoctorDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/doctor/today"
+          element={
+            <ProtectedRoute role="doctor">
+              <DoctorDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/doctor/appointments"
+          element={
+            <ProtectedRoute role="doctor">
+              <DoctorDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/doctor/availability"
+          element={
+            <ProtectedRoute role="doctor">
+              <DoctorDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/doctor/profile"
+          element={
+            <ProtectedRoute role="doctor">
+              <DoctorDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+
+        {/* ===================================== */}
+        {/* ADMIN ROUTE */}
+        {/* ===================================== */}
+
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute role="admin">
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+
+        {/* ===================================== */}
+        {/* 404 */}
+        {/* ===================================== */}
+
+        <Route
+          path="*"
+          element={<NotFound />}
+        />
+
+      </Routes>
+
+    </BrowserRouter>
+  );
 }
 
 export default AppRoutes;

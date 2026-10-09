@@ -10,9 +10,11 @@ const {
     addDoctor,
     getDoctors,
     getDoctor,
+    getMyDoctor,
     editDoctor,
     removeDoctor
 } = require("../controllers/doctorController");
+
 
 // =====================================
 // Public Routes
@@ -21,8 +23,23 @@ const {
 // Get all doctors
 router.get("/", getDoctors);
 
+
+// =====================================
+// Logged-in Doctor Route
+// IMPORTANT: Must come before /:id
+// =====================================
+
+router.get(
+    "/me",
+    protect,
+    authorize("doctor"),
+    getMyDoctor
+);
+
+
 // Get doctor by ID
 router.get("/:id", getDoctor);
+
 
 // =====================================
 // Admin Routes
@@ -53,5 +70,6 @@ router.delete(
     authorize("admin"),
     removeDoctor
 );
+
 
 module.exports = router;
