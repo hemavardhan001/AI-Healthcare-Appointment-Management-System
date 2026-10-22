@@ -1,0 +1,394 @@
+﻿import "./PatientTheme.css";import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import API from "../../services/api";
+import "./DashboardHome.css";
+
+function DashboardHome() {
+  const navigate = useNavigate();
+
+  const [appointments, setAppointments] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // =======================================
+  // Get logged-in patient's name
+  // =======================================
+  const user = JSON.parse(
+    localStorage.getItem("user") || "{}"
+  );
+
+  const userName = user?.name || "Patient";
+
+  useEffect(() => {
+    fetchAppointments();
+  }, []);
+
+  // =======================================
+  // Fetch logged-in patient's appointments
+  // =======================================
+  const fetchAppointments = async () => {
+    try {
+      setLoading(true);
+
+      const res = await API.get("/appointments/my");
+
+      console.log("My Appointments:", res.data);
+
+      setAppointments(
+        Array.isArray(res.data.appointments)
+          ? res.data.appointments
+          : []
+      );
+    } catch (error) {
+      console.error(
+        "Error fetching my appointments:",
+        error.response?.data || error.message
+      );
+
+      setAppointments([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // =======================================
+  // Check whether appointment is upcoming
+  // =======================================
+  const isUpcoming = (appointment) => {
+    if (appointment.status !== "scheduled") {
+      return false;
+    }
+
+    if (
+      !appointment.appointment_date ||
+      !appointment.start_time
+    ) {
+      return false;
+    }
+
+    const appointmentDateTime = new Date(
+      `${appointment.appointment_date}T${appointment.start_time}`
+    );
+
+    if (Number.isNaN(appointmentDateTime.getTime())) {
+      return false;
+    }
+
+    return appointmentDateTime >= new Date();
+  };
+
+  // =======================================
+  // Upcoming appointments
+  // =======================================
+  const upcomingAppointments = appointments
+    .filter(isUpcoming)
+    .sort((a, b) => {
+      const dateA = new Date(
+        `${a.appointment_date}T${a.start_time}`
+      );
+
+      const dateB = new Date(
+        `${b.appointment_date}T${b.start_time}`
+      );
+
+      return dateA - dateB;
+    });
+
+  // =======================================
+  // Logout
+  // =======================================
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    localStorage.removeItem("user");
+    localStorage.removeItem("userName");
+
+    navigate("/login");
+  };
+
+  return (
+    <div className="dashboard-container">
+
+      {/* ==============================
+          Header
+      ============================== */}
+
+      <header className="dashboard-header">
+
+        <div>
+          <h1>Patient Dashboard</h1>
+
+          <p>
+            Welcome back, {userName} ðŸ‘‹
+          </p>
+        </div>
+
+        <button
+          className="logout-btn"
+          onClick={handleLogout}
+        >
+          Logout
+        </button>
+
+      </header>
+
+
+      {/* ==============================
+          Quick Stats
+      ============================== */}
+
+      <div className="stats-container">
+
+        {/* Appointments */}
+
+        <div
+          className="stat-card"
+          onClick={() =>
+            navigate("/patient/appointments")
+          }
+          style={{ cursor: "pointer" }}
+        >
+          <h3>ðŸ“…</h3>
+
+          <p>Appointments</p>
+
+          <strong>
+            {appointments.length}
+          </strong>
+        </div>
+
+
+        {/* Upcoming */}
+
+        <div
+          className="stat-card"
+          onClick={() =>
+            navigate("/patient/appointments")
+          }
+          style={{ cursor: "pointer" }}
+        >
+          <h3>â°</h3>
+
+          <p>Upcoming</p>
+
+          <strong>
+            {upcomingAppointments.length}
+          </strong>
+        </div>
+
+
+        {/* Doctors */}
+
+        <div
+          className="stat-card"
+          onClick={() =>
+            navigate("/patient/doctors")
+          }
+          style={{ cursor: "pointer" }}
+        >
+          <h3>ðŸ‘¨â€âš•ï¸</h3>
+
+          <p>Doctors</p>
+
+          <strong>View</strong>
+        </div>
+
+      </div>
+
+
+      {/* ==============================
+          Quick Actions
+      ============================== */}
+
+      <section className="quick-actions">
+
+        <h2>Quick Actions</h2>
+
+        <div className="action-buttons">
+
+          {/* Find Doctor */}
+
+          <button
+            onClick={() =>
+              navigate("/patient/doctors")
+            }
+          >
+            ðŸ‘¨â€âš•ï¸ Find a Doctor
+          </button>
+
+
+          {/* Book Appointment */}
+
+          <button
+            onClick={() =>
+              navigate(
+                "/patient/book-appointment"
+              )
+            }
+          >
+            ðŸ“… Book Appointment
+          </button>
+
+
+          {/* My Appointments */}
+
+          <button
+            onClick={() =>
+              navigate(
+                "/patient/appointments"
+              )
+            }
+          >
+            ðŸ“‹ My Appointments
+          </button>
+
+
+          {/* My Profile */}
+
+          <button
+            onClick={() =>
+              navigate("/patient/profile")
+            }
+          >
+            ðŸ‘¤ My Profile
+          </button>
+
+        </div>
+
+      </section>
+
+
+      {/* ==============================
+          Upcoming Appointments
+      ============================== */}
+
+      <section className="appointments-section">
+
+        <div className="section-header">
+
+          <h2>
+            Upcoming Appointments
+          </h2>
+
+          <button
+            className="view-all"
+            onClick={() =>
+              navigate(
+                "/patient/appointments"
+              )
+            }
+          >
+            View All
+          </button>
+
+        </div>
+
+
+        {/* ==============================
+            Loading
+        ============================== */}
+
+        {loading && (
+          <p className="message">
+            Loading appointments...
+          </p>
+        )}
+
+
+        {/* ==============================
+            No Appointments
+        ============================== */}
+
+        {!loading &&
+          upcomingAppointments.length === 0 && (
+
+            <div className="empty-card">
+
+              <h3>
+                No upcoming appointments
+              </h3>
+
+              <p>
+                Book an appointment with a
+                doctor to get started.
+              </p>
+
+              <button
+                onClick={() =>
+                  navigate(
+                    "/patient/book-appointment"
+                  )
+                }
+              >
+                ðŸ“… Book Appointment
+              </button>
+
+            </div>
+          )}
+
+
+        {/* ==============================
+            Appointments
+        ============================== */}
+
+        {!loading &&
+          upcomingAppointments.length > 0 && (
+
+            <div className="appointment-list">
+
+              {upcomingAppointments
+                .slice(0, 3)
+                .map((appointment) => (
+
+                  <div
+                    className="appointment-card"
+                    key={appointment.id}
+                  >
+
+                    <div>
+
+                      <h3>
+                        Dr.{" "}
+                        {appointment.doctor_name ||
+                          "Doctor"}
+                      </h3>
+
+                      <p>
+                        ðŸ“…{" "}
+                        {appointment.appointment_date}
+                      </p>
+
+                      <p>
+                        â°{" "}
+                        {appointment.start_time}
+                        {" - "}
+                        {appointment.end_time}
+                      </p>
+
+                      {appointment.specialization && (
+                        <p>
+                          ðŸ©º{" "}
+                          {appointment.specialization}
+                        </p>
+                      )}
+
+                    </div>
+
+
+                    <span className="status">
+                      {appointment.status}
+                    </span>
+
+                  </div>
+
+                ))}
+
+            </div>
+          )}
+
+      </section>
+
+    </div>
+  );
+}
+
+export default DashboardHome;

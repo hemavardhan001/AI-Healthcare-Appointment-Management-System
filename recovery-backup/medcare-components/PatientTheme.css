@@ -1,0 +1,166 @@
+﻿/* Shared modern teal theme for patient dashboard pages */
+.dashboard-container,
+.profile-page,
+.appointments-page,
+.symptom-checker-page {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 28px;
+  color: #173b43;
+  box-sizing: border-box;
+  font-family: Inter, "Segoe UI", sans-serif;
+}
+
+.dashboard-header,
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+
+.dashboard-header h1,
+.profile-page h1,
+.appointments-page h1,
+.symptom-checker-page h1 {
+  margin: 0 0 8px;
+  color: #123e46;
+  font-size: clamp(26px, 4vw, 36px);
+  font-weight: 750;
+}
+
+.dashboard-header p,
+.profile-page p {
+  color: #647b80;
+}
+
+.stats-container {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin: 24px 0 32px;
+}
+
+.stat-card,
+.appointment-card,
+.empty-card,
+.quick-actions,
+.profile-card,
+.symptom-card {
+  background: #fff;
+  border: 1px solid #deeeeb;
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 8px 26px rgba(22, 91, 88, .07);
+}
+
+.stat-card {
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.stat-card:hover,
+.appointment-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(22, 91, 88, .12);
+}
+.stat-card h3 { font-size: 28px; margin: 0 0 12px; }
+.stat-card p { color: #678085; margin: 0 0 8px; }
+.stat-card strong { color: #087f78; font-size: 30px; }
+
+.quick-actions,
+.appointments-section { margin: 28px 0; }
+.quick-actions h2,
+.appointments-section h2 { color: #16464d; margin-top: 0; }
+
+.action-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.dashboard-container button,
+.profile-page button,
+.appointments-page button,
+.symptom-checker-page button {
+  border: 0;
+  border-radius: 10px;
+  padding: 12px 18px;
+  background: #087f78;
+  color: #fff;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background .2s ease, transform .2s ease;
+}
+.dashboard-container button:hover,
+.profile-page button:hover,
+.appointments-page button:hover,
+.symptom-checker-page button:hover {
+  background: #066761;
+  transform: translateY(-1px);
+}
+.dashboard-container .logout-btn {
+  background: #fff;
+  color: #087f78;
+  border: 1px solid #b9dcd6;
+}
+.dashboard-container .view-all {
+  background: #e6f6f2;
+  color: #087f78;
+}
+.appointment-list { display: grid; gap: 14px; }
+.appointment-card { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.appointment-card h3 { margin: 0 0 10px; color: #16464d; }
+.appointment-card p { margin: 7px 0; color: #647b80; }
+.status {
+  display: inline-block;
+  border-radius: 30px;
+  padding: 7px 12px;
+  background: #e1f7ec;
+  color: #16744a;
+  font-size: 13px;
+  font-weight: 700;
+}
+.message { color: #647b80; padding: 20px 0; }
+.empty-card { text-align: center; padding: 36px 20px; }
+.empty-card h3 { color: #16464d; }
+.empty-card p { color: #647b80; margin-bottom: 22px; }
+
+.profile-page input,
+.profile-page select,
+.profile-page textarea,
+.symptom-checker-page input,
+.symptom-checker-page select,
+.symptom-checker-page textarea,
+.appointments-page input,
+.appointments-page select,
+.appointments-page textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #cfe2df;
+  border-radius: 10px;
+  padding: 12px 14px;
+  background: #fbfefd;
+  color: #173b43;
+  font: inherit;
+}
+.profile-page input:focus,
+.profile-page textarea:focus,
+.symptom-checker-page textarea:focus {
+  outline: 2px solid #8bd6ca;
+  border-color: #087f78;
+}
+
+@media (max-width: 760px) {
+  .dashboard-container,
+  .profile-page,
+  .appointments-page,
+  .symptom-checker-page { padding: 16px; }
+  .stats-container { grid-template-columns: 1fr; }
+  .action-buttons { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stat-card, .appointment-card, .empty-card, .quick-actions { padding: 18px; }
+}
+@media (max-width: 420px) {
+  .action-buttons { grid-template-columns: 1fr; }
+}
