@@ -5,14 +5,17 @@ const path = require('path');
 let db;
 
 const initDB = async () => {
+  const dbPath = process.env.DB_PATH ||
+    path.join(__dirname, '../database/appointment.db');
+
   db = await open({
-    filename: path.join(__dirname, '../database/appointment.db'),
+    filename: dbPath,
     driver: sqlite3.Database,
   });
 
   await db.run('PRAGMA foreign_keys = ON');
 
-  console.log('✅ Connected to SQLite database');
+  console.log('Connected to SQLite database:', dbPath);
   return db;
 };
 

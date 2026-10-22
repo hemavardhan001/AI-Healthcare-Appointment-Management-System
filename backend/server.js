@@ -5,6 +5,8 @@ const morgan = require('morgan');
 require('dotenv').config();
 
 const { initDB, getDB } = require('./config/database');
+const fs = require('fs');
+const path = require('path');
 
 // Routes
 const authRoutes = require('./routes/authRoutes');
@@ -111,6 +113,9 @@ const startServer = async () => {
     try {
 
         await initDB();
+        const schemaPath = path.join(__dirname, 'database', 'schema.sql');
+        const schema = fs.readFileSync(schemaPath, 'utf8');
+        await getDB().exec(schema);
         await ensureNotificationSchema();
         require('./services/reminderScheduler').startReminderScheduler();
 
