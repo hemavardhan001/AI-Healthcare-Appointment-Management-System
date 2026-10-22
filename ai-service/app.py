@@ -2,7 +2,12 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": ["http://localhost:5173", "http://127.0.0.1:5173"]}})
+
+CORS(app, resources={r"/*": {"origins": [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "https://ai-healthcare-appointment-managemen.vercel.app"
+]}})
 
 def analyze_symptoms(symptoms):
     text = symptoms.lower()
