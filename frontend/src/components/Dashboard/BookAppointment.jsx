@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import API from "../../services/api";
 
@@ -488,7 +488,7 @@ function BookAppointment() {
 
                 <div>
                     <h1>
-                        📅 Book Appointment
+                        Book Appointment
                     </h1>
 
                     <p
@@ -508,7 +508,7 @@ function BookAppointment() {
                     }
                     style={buttonStyle}
                 >
-                    ← Dashboard
+                    ← Dashboard
                 </button>
 
             </div>
@@ -578,7 +578,7 @@ function BookAppointment() {
                     <div
                         style={{
                             background:
-                                "#eff6ff",
+                                "#f0f9f8",
                             padding: "15px",
                             borderRadius: "8px",
                             marginBottom: "20px"
@@ -586,7 +586,7 @@ function BookAppointment() {
                     >
 
                         <strong>
-                            🕐 Doctor Availability
+                            Availability
                         </strong>
 
                         {loadingAvailability ? (
@@ -733,7 +733,7 @@ function BookAppointment() {
                         ) : (
 
                             <strong>
-                                ❌ Doctor is not
+                                available on{" "}
                                 available on{" "}
                                 {getDayName(
                                     selectedDay
@@ -811,13 +811,13 @@ function BookAppointment() {
 
                 {message && (
                     <div style={successStyle}>
-                        ✅ {message}
+                        {message}
                     </div>
                 )}
 
                 {error && (
                     <div style={errorStyle}>
-                        ❌ {error}
+                        {error}
                     </div>
                 )}
 
@@ -846,7 +846,7 @@ function BookAppointment() {
                             loadingDoctors ||
                             loadingAvailability
                                 ? "#9ca3af"
-                                : "#2563eb",
+                                : "#0e9f91",
 
                         color: "white",
                         fontSize: "16px",
@@ -862,7 +862,7 @@ function BookAppointment() {
 
                     {booking
                         ? "Booking..."
-                        : "📅 Book Appointment"}
+                        : "Book Appointment"}
 
                 </button>
 
@@ -890,7 +890,7 @@ const buttonStyle = {
     padding: "10px 18px",
     border: "none",
     borderRadius: "8px",
-    background: "#2563eb",
+    background: "#0e9f91",
     color: "white",
     cursor: "pointer"
 };
@@ -912,3 +912,5 @@ const errorStyle = {
 };
 
 export default BookAppointment;
+
+

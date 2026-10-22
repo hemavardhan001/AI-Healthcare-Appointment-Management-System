@@ -1,6 +1,6 @@
-.doctors-page {
+﻿.doctors-page {
   min-height: 100vh;
-  background: #f5f7fb;
+  background: #f4fbfa;
   padding: 30px;
   box-sizing: border-box;
 }
@@ -29,7 +29,7 @@
   border: none;
   padding: 11px 18px;
   border-radius: 8px;
-  background: #2563eb;
+  background: #0e9f91;
   color: white;
   font-size: 14px;
   cursor: pointer;
@@ -37,7 +37,7 @@
 }
 
 .dashboard-btn:hover {
-  background: #1d4ed8;
+  background: #087f76;
   transform: translateY(-1px);
 }
 
@@ -70,7 +70,7 @@
   width: 65px;
   height: 65px;
   border-radius: 50%;
-  background: #eff6ff;
+  background: #f0f9f8;
 
   display: flex;
   align-items: center;
@@ -89,7 +89,7 @@
 
 /* Specialization */
 .specialization {
-  color: #2563eb;
+  color: #0e9f91;
   font-weight: 600;
   margin: 8px 0 18px;
 }
@@ -116,7 +116,7 @@
   padding: 12px;
   border-radius: 8px;
 
-  background: #2563eb;
+  background: #0e9f91;
   color: white;
 
   font-size: 15px;
@@ -127,7 +127,7 @@
 }
 
 .book-btn:hover {
-  background: #1d4ed8;
+  background: #087f76;
   transform: translateY(-1px);
 }
 
@@ -215,3 +215,4 @@
     font-size: 19px;
   }
 }
+

@@ -141,7 +141,7 @@
 
 .form-group input:focus,
 .form-group select:focus {
-    border-color: #2563eb;
+    border-color: #0e9f91;
 
     box-shadow:
         0 0 0 3px rgba(37, 99, 235, 0.12);
@@ -169,7 +169,7 @@
 .save-btn {
     border: none;
 
-    background: #2563eb;
+    background: #0e9f91;
     color: #ffffff;
 
     padding: 11px 18px;
@@ -188,7 +188,7 @@
 }
 
 .save-btn:hover {
-    background: #1d4ed8;
+    background: #087f76;
 
     transform: translateY(-1px);
 
@@ -293,8 +293,8 @@
     align-items: center;
     justify-content: center;
 
-    background: #dbeafe;
-    color: #1d4ed8;
+    background: #b7e7df;
+    color: #087f76;
 
     border-radius: 50%;
 
@@ -382,8 +382,8 @@
 .edit-btn {
     border: none;
 
-    background: #dbeafe;
-    color: #1d4ed8;
+    background: #b7e7df;
+    color: #087f76;
 
     padding: 9px 14px;
 

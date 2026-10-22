@@ -1,359 +1,576 @@
-/* =========================================
-   Global Reset
-========================================= */
+﻿@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
 
-* {
-  margin: 0;
-  padding: 0;
+.med-dashboard,
+.med-dashboard * {
   box-sizing: border-box;
 }
 
-
-/* =========================================
-   Main Dashboard
-========================================= */
-
-.dashboard {
+.med-dashboard {
+  --med-teal: #0e9f91;
+  --med-teal-dark: #087f76;
+  --med-ink: #173b43;
+  --med-muted: #71858b;
   display: flex;
   min-height: 100vh;
-  background: #f4f7fc;
-  font-family: Arial, sans-serif;
+  background: #f4f9f9;
+  color: var(--med-ink);
+  font-family: 'DM Sans', Arial, sans-serif;
 }
 
-
-/* =========================================
-   Sidebar
-========================================= */
-
-.sidebar {
-  width: 250px;
+.med-sidebar {
+  width: 258px;
   min-height: 100vh;
-  background: #1f3c88;
-  color: white;
-  padding: 30px 20px;
+  padding: 28px 18px 22px;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
+  background: #fff;
+  border-right: 1px solid #e5efee;
+  color: var(--med-ink);
 }
 
-.sidebar h2 {
-  text-align: center;
-  margin-bottom: 40px;
-  font-size: 21px;
+.med-brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 0 8px;
+  margin-bottom: 42px;
 }
 
-.sidebar ul {
-  list-style: none;
-  flex: 1;
-}
-
-.sidebar li {
-  padding: 15px;
-  cursor: pointer;
-  border-radius: 8px;
-  transition: 0.3s;
-  margin-bottom: 10px;
-  font-size: 15px;
-}
-
-.sidebar li:hover {
-  background: #325dbd;
-}
-
-.sidebar li.active {
-  background: #325dbd;
-  font-weight: bold;
-}
-
-.sidebar button {
-  padding: 12px;
-  background: #ff4d4d;
+.med-brand-icon {
+  display: grid;
+  place-items: center;
+  width: 43px;
+  height: 43px;
+  flex-shrink: 0;
+  border-radius: 14px;
+  background: var(--med-teal);
   color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: 0.3s;
+  font-size: 26px;
+  font-weight: 700;
+  box-shadow: 0 6px 14px #0e9f9133;
 }
 
-.sidebar button:hover {
-  background: #e60000;
+.med-brand h2 {
+  margin: 0;
+  color: #173b43;
+  font: 800 23px 'Manrope', sans-serif;
+  letter-spacing: -1px;
 }
 
+.med-brand span {
+  display: block;
+  margin-top: 3px;
+  color: #92a5a8;
+  font-size: 9px;
+  letter-spacing: 1.25px;
+  font-weight: 700;
+}
 
-/* =========================================
-   Main Content
-========================================= */
+.med-menu-label {
+  padding: 0 13px;
+  margin: 0 0 12px;
+  color: #9aabad;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+}
 
-.content {
+.med-nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
   flex: 1;
-  padding: 40px;
+}
+
+.med-sidebar .med-nav li {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 13px 14px;
+  margin: 0 0 7px;
+  border-radius: 11px;
+  cursor: pointer;
+  color: #73868b;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background .2s, color .2s;
+}
+
+.med-sidebar .med-nav li:hover {
+  background: #f0f9f8;
+  color: var(--med-teal-dark);
+}
+
+.med-sidebar .med-nav li.active {
+  background: #e8f7f5;
+  color: var(--med-teal-dark);
+  font-weight: 700;
+}
+
+.med-nav-icon {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  font-size: 21px;
+  line-height: 1;
+}
+
+.med-nav-arrow {
+  margin-left: auto;
+  font-size: 22px;
+}
+
+.med-sidebar-help {
+  margin: 20px 0 16px;
+  padding: 17px 15px;
+  border-radius: 14px;
+  background: #f0f9f8;
+}
+
+.med-help-icon {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  background: #d6f1ec;
+  color: var(--med-teal-dark);
+  font-size: 22px;
+}
+
+.med-sidebar-help strong {
+  display: block;
+  font-size: 12px;
+}
+
+.med-sidebar-help p {
+  margin: 6px 0 0;
+  color: var(--med-muted);
+  font-size: 11px;
+}
+
+.med-sidebar .med-logout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e5efee;
+  border-radius: 10px;
+  background: white;
+  color: #d45d5d;
+  font: 700 13px 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: background .2s;
+}
+
+.med-sidebar .med-logout:hover {
+  background: #fff2f1;
+}
+
+.med-content {
+  flex: 1;
+  min-width: 0;
+  padding: 28px clamp(18px, 3.2vw, 46px) 18px;
+}
+
+.med-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 26px;
+}
+
+.med-top-eyebrow {
+  color: var(--med-teal);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+}
+
+.med-topbar h2 {
+  margin: 5px 0 0;
+  color: var(--med-ink);
+  font: 800 clamp(20px, 2vw, 27px) 'Manrope', sans-serif;
+  letter-spacing: -.8px;
+}
+
+.med-user {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 8px 13px 8px 8px;
+  border: 1px solid #e6eeee;
+  border-radius: 13px;
+  background: #fff;
+}
+
+.med-user-avatar {
+  display: grid;
+  place-items: center;
+  width: 39px;
+  height: 39px;
+  border-radius: 12px;
+  background: #dff4ef;
+  color: var(--med-teal-dark);
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.med-user strong,
+.med-user span {
+  display: block;
+}
+
+.med-user strong {
+  max-width: 150px;
+  overflow: hidden;
+  color: var(--med-ink);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.med-user span {
+  margin-top: 4px;
+  color: #8b9da0;
+  font-size: 10px;
+}
+
+.med-dashboard .med-welcome {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 242px;
+  padding: clamp(24px, 3.5vw, 42px);
+  overflow: hidden;
+  border: 0;
+  border-radius: 20px;
+  background: linear-gradient(112deg, #e5f7f3 0%, #eaf8f6 58%, #d5f0eb 100%);
+  box-shadow: none;
+}
+
+.med-welcome-copy {
+  position: relative;
+  z-index: 2;
+  max-width: 560px;
+}
+
+.med-welcome-tag {
+  display: inline-block;
+  padding: 7px 10px;
+  border-radius: 7px;
+  background: #d0eee8;
+  color: #168d80;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+}
+
+.med-dashboard .med-welcome h1 {
+  margin: 17px 0 10px;
+  color: #153f45;
+  font: 800 clamp(26px, 3vw, 38px) 'Manrope', sans-serif;
+  letter-spacing: -1.4px;
+  overflow-wrap: anywhere;
+}
+
+.med-welcome p {
+  max-width: 450px;
+  margin: 0;
+  color: #627d80;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.med-welcome-copy button {
+  margin-top: 23px;
+  padding: 12px 17px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--med-teal);
+  color: white;
+  font: 700 12px 'DM Sans', sans-serif;
+  cursor: pointer;
+  box-shadow: 0 7px 15px #0e9f912c;
+  transition: background .2s, transform .2s;
+}
+
+.med-welcome-copy button:hover {
+  transform: translateY(-2px);
+  background: var(--med-teal-dark);
+}
+
+.med-welcome-art {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 200px;
+  height: 180px;
+  flex-shrink: 0;
+  margin-right: 15px;
+  border-radius: 50%;
+  background: #d2efe9;
+}
+
+.med-art-circle {
+  display: grid;
+  place-items: center;
+  width: 112px;
+  height: 112px;
+  border: 12px solid #a9e0d7;
+  border-radius: 50%;
+  background: #0e9f91;
+  color: white;
+  font-size: 64px;
+  font-weight: 400;
+  box-shadow: 0 14px 25px #188d8030;
+}
+
+.med-art-plus {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 33px;
+  height: 33px;
+  border-radius: 11px;
+  background: white;
+  color: var(--med-teal);
+  font-size: 23px;
+  font-weight: 700;
+  box-shadow: 0 6px 15px #15574b12;
+}
+
+.med-art-plus-one {
+  top: 13px;
+  right: 18px;
+}
+
+.med-art-plus-two {
+  bottom: 11px;
+  left: 8px;
+}
+
+.med-art-dot {
+  position: absolute;
+  top: 30px;
+  left: 12px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #69c8b8;
+}
+
+.med-page-content {
+  margin-top: 27px;
   min-width: 0;
 }
 
-
-/* =========================================
-   Welcome Card
-========================================= */
-
-.welcome-card {
-  background: white;
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-.welcome-card h1 {
-  color: #1f3c88;
-  margin-bottom: 10px;
-}
-
-.welcome-card p {
-  color: #666;
-}
-
-
-/* =========================================
-   Cards
-========================================= */
-
-.cards {
-  margin-top: 30px;
-  display: grid;
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(220px, 1fr)
-  );
-  gap: 20px;
-}
-
-.card {
-  background: white;
-  padding: 30px;
-  border-radius: 15px;
-  text-align: center;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  transition: 0.3s;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-}
-
-.card h1 {
-  font-size: 40px;
-  color: #1f3c88;
-  margin-top: 15px;
-}
-
-.card h2 {
-  font-size: 45px;
-  margin-bottom: 15px;
-}
-
-.card h3 {
-  margin-bottom: 10px;
-}
-
-
-/* =========================================
-   Tables
-========================================= */
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-table th,
-table td {
-  padding: 12px;
-  border-bottom: 1px solid #ddd;
-  text-align: left;
-}
-
-table th {
-  background: #f4f7fc;
-}
-
-table tr:hover {
-  background: #f8f9ff;
-}
-
-
-/* =========================================
-   Doctor Grid
-========================================= */
-
-.doctor-grid {
-  display: grid;
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(280px, 1fr)
-  );
-  gap: 25px;
-  margin-top: 25px;
-}
-
-.doctor-card {
-  background: white;
-  padding: 25px;
-  border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  transition: 0.3s;
-}
-
-.doctor-card:hover {
-  transform: translateY(-5px);
-}
-
-.doctor-avatar {
-  font-size: 70px;
-  margin-bottom: 15px;
-}
-
-.doctor-card h3 {
-  color: #1f3c88;
-  margin-bottom: 15px;
-}
-
-.doctor-card p {
-  margin: 10px 0;
-  color: #555;
-}
-
-.doctor-card button {
-  margin-top: 15px;
-  width: 100%;
-  padding: 12px;
-  background: #1f3c88;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: 0.3s;
-}
-
-.doctor-card button:hover {
-  background: #325dbd;
-}
-
-
-/* =========================================
-   Profile
-========================================= */
-
-.profile-card {
-  width: 400px;
+.med-page-content > * {
   max-width: 100%;
-  margin: auto;
-  background: white;
-  padding: 30px;
+}
+
+.med-page-content .card,
+.med-page-content .doctor-card,
+.med-page-content .profile-card {
+  border: 1px solid #e7efef;
   border-radius: 15px;
-  text-align: center;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 5px 22px #1b565708;
 }
 
-.profile-avatar {
-  font-size: 80px;
-  margin-bottom: 20px;
+.med-page-content .card h1,
+.med-page-content .doctor-card h3,
+.med-page-content .profile-card h3 {
+  color: var(--med-teal-dark);
 }
 
-.profile-card h3 {
-  color: #1f3c88;
-  margin-bottom: 20px;
+.med-page-content button {
+  transition: background .2s, transform .2s;
 }
 
-.profile-card p {
-  margin: 15px 0;
-  color: #555;
+.med-footer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 35px;
+  padding-top: 17px;
+  border-top: 1px solid #e5eeee;
+  color: #95a6a8;
+  font-size: 10px;
 }
 
-.profile-card button {
-  margin-top: 20px;
-  padding: 12px 25px;
-  background: #1f3c88;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.3s;
+@media (max-width: 900px) {
+  .med-sidebar {
+    width: 225px;
+    padding: 23px 13px;
+  }
+
+  .med-welcome-art {
+    width: 145px;
+    height: 145px;
+    margin-right: 0;
+  }
+
+  .med-art-circle {
+    width: 94px;
+    height: 94px;
+    font-size: 50px;
+  }
 }
 
-.profile-card button:hover {
-  background: #325dbd;
-}
-
-
-/* =========================================
-   Mobile Responsive
-========================================= */
-
-@media (max-width: 768px) {
-  .dashboard {
+@media (max-width: 680px) {
+  .med-dashboard {
     flex-direction: column;
   }
 
-  .sidebar {
+  .med-sidebar {
     width: 100%;
     min-height: auto;
-    padding: 20px;
+    padding: 17px;
+    border-right: 0;
+    border-bottom: 1px solid #e5efee;
   }
 
-  .sidebar h2 {
+  .med-brand {
     margin-bottom: 20px;
   }
 
-  .sidebar ul {
+  .med-menu-label {
+    margin-bottom: 8px;
+  }
+
+  .med-sidebar .med-nav {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 6px;
   }
 
-  .sidebar li {
-    margin-bottom: 0;
-    flex: 1 1 140px;
-    text-align: center;
+  .med-sidebar .med-nav li {
+    flex: 1 1 145px;
+    margin: 0;
+    padding: 11px;
+    font-size: 12px;
   }
 
-  .sidebar button {
-    margin-top: 15px;
+  .med-sidebar-help {
+    display: none;
   }
 
-  .content {
-    padding: 20px;
+  .med-sidebar .med-logout {
+    margin-top: 14px;
   }
 
-  .welcome-card {
-    padding: 20px;
+  .med-content {
+    padding: 20px 15px;
+  }
+
+  .med-topbar {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+  }
+
+  .med-user {
+    max-width: 100%;
+  }
+
+  .med-dashboard .med-welcome {
+    min-height: auto;
+    padding: 24px 20px;
+  }
+
+  .med-welcome-art {
+    display: none;
+  }
+
+  .med-dashboard .med-welcome h1 {
+    font-size: 29px;
+  }
+
+  .med-page-content {
+    margin-top: 20px;
+    overflow-wrap: anywhere;
+  }
+
+  .med-page-content table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
   }
 }
 
-
-/* =========================================
-   Small Mobile Screens
-========================================= */
-
-@media (max-width: 480px) {
-  .content {
-    padding: 15px;
+@media (max-width: 420px) {
+  .med-sidebar .med-nav li {
+    flex-basis: 100%;
   }
 
-  .sidebar {
-    padding: 15px;
+  .med-footer {
+    flex-direction: column;
   }
+}
+/* MedCare My Appointments theme */
+.med-page-content {
+  color: #173b43;
+}
 
-  .sidebar li {
-    flex: 1 1 100%;
-  }
+.med-page-content h1,
+.med-page-content h2 {
+  color: #173b43;
+}
 
-  .card {
-    padding: 20px;
-  }
+.med-page-content button {
+  border-radius: 9px;
+  cursor: pointer;
+}
 
-  .profile-card {
-    padding: 20px;
+.med-page-content input,
+.med-page-content select,
+.med-page-content textarea {
+  border: 1px solid #dce9e8;
+  border-radius: 9px;
+  padding: 11px 12px;
+  max-width: 100%;
+}
+
+.med-page-content input:focus,
+.med-page-content select:focus,
+.med-page-content textarea:focus {
+  outline: none;
+  border-color: #0e9f91;
+  box-shadow: 0 0 0 3px #0e9f911c;
+}
+
+.med-page-content table {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.med-page-content th {
+  background: #eaf7f5;
+  color: #087f76;
+}
+
+.med-page-content td,
+.med-page-content th {
+  border-bottom: 1px solid #e5efee;
+  padding: 13px;
+}
+
+.med-page-content tr:hover {
+  background: #f4fbfa;
+}
+
+@media (max-width: 600px) {
+  .med-page-content table {
+    display: block;
+    overflow-x: auto;
   }
 }

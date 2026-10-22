@@ -8,6 +8,9 @@ function DashboardHome() {
 
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [notifications, setNotifications] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [showNotifications, setShowNotifications] = useState(false);
 
   // =======================================
   // Get logged-in patient's name
@@ -20,6 +23,10 @@ function DashboardHome() {
 
   useEffect(() => {
     fetchAppointments();
+    fetchNotifications();
+
+    const timer = setInterval(fetchNotifications, 60000);
+    return () => clearInterval(timer);
   }, []);
 
   // =======================================
@@ -51,6 +58,43 @@ function DashboardHome() {
   };
 
   // =======================================
+  const fetchNotifications = async () => {
+    try {
+      const [listRes, countRes] = await Promise.all([
+        API.get("/notifications"),
+        API.get("/notifications/unread-count")
+      ]);
+
+      setNotifications(
+        Array.isArray(listRes.data.notifications)
+          ? listRes.data.notifications
+          : []
+      );
+      setUnreadCount(Number(countRes.data.count) || 0);
+    } catch (error) {
+      console.error(
+        "Error fetching notifications:",
+        error.response?.data || error.message
+      );
+    }
+  };
+
+  const markNotificationRead = async (notificationId) => {
+    try {
+      await API.put(`/notifications/${notificationId}/read`);
+      setNotifications((current) =>
+        current.map((item) =>
+          item.id === notificationId ? { ...item, is_read: 1 } : item
+        )
+      );
+      setUnreadCount((count) => Math.max(0, count - 1));
+    } catch (error) {
+      console.error(
+        "Error marking notification as read:",
+        error.response?.data || error.message
+      );
+    }
+  };
   // Check whether appointment is upcoming
   // =======================================
   const isUpcoming = (appointment) => {
@@ -122,6 +166,69 @@ function DashboardHome() {
           </p>
         </div>
 
+        <div className="notification-center">
+          <button
+            type="button"
+            className="notification-toggle"
+            onClick={() => setShowNotifications((visible) => !visible)}
+            aria-expanded={showNotifications}
+            aria-label={`Notifications, ${unreadCount} unread`}
+          >
+            <span aria-hidden="true">{"\uD83D\uDD14"}</span>
+            <span>Notifications</span>
+            {unreadCount > 0 && (
+              <span className="notification-badge">
+                {unreadCount > 99 ? "99+" : unreadCount}
+              </span>
+            )}
+          </button>
+
+          {showNotifications && (
+            <div className="notification-panel">
+              <div className="notification-panel-header">
+                <h2>Notifications</h2>
+                <span>{unreadCount} unread</span>
+              </div>
+
+              {notifications.length === 0 ? (
+                <p className="notification-empty">No notifications yet.</p>
+              ) : (
+                <div className="notification-items">
+                  {notifications.map((notification) => (
+                    <article
+                      className={`notification-item ${
+                        Number(notification.is_read) === 0 ? "unread" : ""
+                      }`}
+                      key={notification.id}
+                    >
+                      <div className="notification-item-heading">
+                        <strong>{notification.title}</strong>
+                        {Number(notification.is_read) === 0 && (
+                          <span className="notification-unread-dot" />
+                        )}
+                      </div>
+                      <p>{notification.message}</p>
+                      <small>
+                        {notification.created_at
+                          ? new Date(notification.created_at).toLocaleString()
+                          : ""}
+                      </small>
+                      {Number(notification.is_read) === 0 && (
+                        <button
+                          type="button"
+                          className="notification-read-btn"
+                          onClick={() => markNotificationRead(notification.id)}
+                        >
+                          Mark as read
+                        </button>
+                      )}
+                    </article>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
         <button
           className="logout-btn"
           onClick={handleLogout}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../../services/api";
 
@@ -189,7 +189,7 @@ function Profile() {
           }
           style={buttonStyle}
         >
-          ← Dashboard
+          ← Dashboard
         </button>
 
       </div>
@@ -215,7 +215,7 @@ function Profile() {
               width: "90px",
               height: "90px",
               borderRadius: "50%",
-              background: "#eff6ff",
+              background: "#f0f9f8",
               margin:
                 "0 auto 15px",
               display: "flex",
@@ -239,7 +239,7 @@ function Profile() {
 
           <p
             style={{
-              color: "#2563eb",
+              color: "#0e9f91",
               textTransform:
                 "capitalize",
               marginTop: "5px"
@@ -374,7 +374,7 @@ const buttonStyle = {
   padding: "10px 18px",
   border: "none",
   borderRadius: "8px",
-  background: "#2563eb",
+  background: "#0e9f91",
   color: "white",
   cursor: "pointer"
 };
@@ -414,3 +414,5 @@ const emptyStyle = {
 };
 
 export default Profile;
+
+

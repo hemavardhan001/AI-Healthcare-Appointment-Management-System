@@ -1,39 +1,26 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+﻿import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import API from "../../services/api";
 import "./Login.css";
 
 function Login() {
   const navigate = useNavigate();
-
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-  });
-
+  const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
-
+    setForm({ ...form, [e.target.name]: e.target.value });
     setError("");
   };
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
     setError("");
     setLoading(true);
 
     try {
       const res = await API.post("/auth/login", form);
-
-      console.log("Login Response:", res.data);
-
       const user = res.data.user;
       const token = res.data.token;
 
@@ -44,103 +31,62 @@ function Login() {
       localStorage.setItem("user", JSON.stringify(user));
 
       switch (user.role) {
-        case "patient":
-          navigate("/patient");
-          break;
-
-        case "doctor":
-          navigate("/doctor");
-          break;
-
-        case "admin":
-          navigate("/admin");
-          break;
-
-        default:
-          navigate("/");
+        case "patient": navigate("/patient"); break;
+        case "doctor": navigate("/doctor"); break;
+        case "admin": navigate("/admin"); break;
+        default: navigate("/");
       }
-
     } catch (err) {
-      console.error(
-        "Login Error:",
-        err.response?.data || err.message
-      );
-
-      setError(
-        err.response?.data?.message ||
-        "Login failed. Please check your email and password."
-      );
+      setError(err.response?.data?.message || "Login failed. Please check your email and password.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="login-container">
+    <main className="med-auth-page">
+      <Link to="/" className="med-auth-brand"><span>✚</span> MedCare</Link>
+      <div className="med-auth-layout">
+        <section className="med-auth-welcome">
+          <div className="med-auth-welcome-icon">✚</div>
+          <span className="med-auth-kicker">YOUR HEALTH, OUR PRIORITY</span>
+          <h1>Welcome back to <span>better care.</span></h1>
+          <p>Sign in to manage your appointments and continue your healthcare journey with MedCare.</p>
+          <div className="med-auth-points">
+            <div><span>✓</span> Easy appointment management</div>
+            <div><span>✓</span> Your healthcare in one place</div>
+            <div><span>✓</span> Simple and secure access</div>
+          </div>
+        </section>
 
-      <form
-        className="login-card"
-        onSubmit={handleLogin}
-      >
+        <form className="med-auth-card" onSubmit={handleLogin}>
+          <span className="med-auth-small">WELCOME BACK</span>
+          <h2>Sign in to your account</h2>
+          <p className="med-auth-subtitle">Enter your details below to continue.</p>
 
-        <h2>Login</h2>
+          <label htmlFor="login-email">Email address</label>
+          <input id="login-email" type="email" name="email" placeholder="you@example.com"
+            value={form.email} onChange={handleChange} autoComplete="email" required />
 
-        {/* Email */}
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={form.email}
-          onChange={handleChange}
-          required
-        />
+          <div className="med-auth-password-label">
+            <label htmlFor="login-password">Password</label>
+            <button type="button" onClick={() => navigate("/forgot-password")}>Forgot password?</button>
+          </div>
+          <input id="login-password" type="password" name="password" placeholder="Enter your password"
+            value={form.password} onChange={handleChange} autoComplete="current-password" required />
 
-        {/* Password */}
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={form.password}
-          onChange={handleChange}
-          required
-        />
+          {error && <p className="med-auth-error">{error}</p>}
 
-        {/* Forgot Password */}
-        <div style={{ textAlign: "right", marginBottom: "15px" }}>
-          <button
-            type="button"
-            onClick={() => navigate("/forgot-password")}
-            style={{
-              background: "none",
-              border: "none",
-              padding: 0,
-              color: "#007bff",
-              cursor: "pointer",
-              fontSize: "14px"
-            }}
-          >
-            Forgot Password?
+          <button className="med-auth-submit" type="submit" disabled={loading}>
+            {loading ? "Signing in..." : "Sign In"} <span>→</span>
           </button>
-        </div>
 
-        {/* Login Button */}
-        <button
-          type="submit"
-          disabled={loading}
-        >
-          {loading ? "Logging in..." : "Login"}
-        </button>
-
-        {/* Error */}
-        {error && (
-          <p className="error">
-            {error}
-          </p>
-        )}
-
-      </form>
-
-    </div>
+          <p className="med-auth-switch">Don't have an account? <Link to="/register">Create account</Link></p>
+          <Link to="/" className="med-auth-home-link">← Back to home</Link>
+        </form>
+      </div>
+      <p className="med-auth-footer">© {new Date().getFullYear()} MedCare · Your health matters.</p>
+    </main>
   );
 }
 

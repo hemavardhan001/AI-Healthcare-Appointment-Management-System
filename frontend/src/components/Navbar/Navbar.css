@@ -13,7 +13,7 @@
 .logo{
     font-size:28px;
     font-weight:bold;
-    color:#2563eb;
+    color:#0e9f91;
 }
 
 .nav-links{
@@ -30,7 +30,7 @@
 }
 
 .nav-links a:hover{
-    color:#2563eb;
+    color:#0e9f91;
 }
 
 .auth-buttons{
@@ -40,21 +40,21 @@
 
 .login-btn{
     text-decoration:none;
-    color:#2563eb;
-    border:2px solid #2563eb;
+    color:#0e9f91;
+    border:2px solid #0e9f91;
     padding:10px 20px;
     border-radius:8px;
     transition:.3s;
 }
 
 .login-btn:hover{
-    background:#2563eb;
+    background:#0e9f91;
     color:white;
 }
 
 .register-btn{
     text-decoration:none;
-    background:#2563eb;
+    background:#0e9f91;
     color:white;
     padding:10px 20px;
     border-radius:8px;
@@ -62,7 +62,7 @@
 }
 
 .register-btn:hover{
-    background:#1d4ed8;
+    background:#087f76;
 }
 
 @media(max-width:768px){

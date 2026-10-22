@@ -238,6 +238,13 @@ const bookAppointment = async (req, res) => {
     } catch (err) {
         console.error("Book Appointment Error:", err);
 
+        if (err.message && err.message.includes("Appointment overlaps an existing scheduled appointment")) {
+            return res.status(409).json({
+                success: false,
+                message: "This doctor already has an appointment during that time. Please choose another slot."
+            });
+        }
+
         return res.status(500).json({
             success: false,
             message: "Internal Server Error"

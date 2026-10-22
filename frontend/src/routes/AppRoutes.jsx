@@ -92,6 +92,14 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/patient/ai-assistant"
+          element={
+            <ProtectedRoute role="patient">
+              <PatientDashboard />
+            </ProtectedRoute>
+          }
+        />
 
 
         {/* ===================================== */}

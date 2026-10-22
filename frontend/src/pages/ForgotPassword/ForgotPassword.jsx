@@ -123,7 +123,7 @@ function ForgotPassword() {
                         marginTop: "10px",
                         background: "none",
                         border: "none",
-                        color: "#007bff",
+                        color: "#0e9f91",
                         cursor: "pointer"
                     }}
                 >

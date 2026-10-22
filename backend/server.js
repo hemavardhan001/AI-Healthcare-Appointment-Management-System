@@ -4,13 +4,14 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 require('dotenv').config();
 
-const { initDB } = require('./config/database');
+const { initDB, getDB } = require('./config/database');
 
 // Routes
 const authRoutes = require('./routes/authRoutes');
 const doctorRoutes = require('./routes/doctorRoutes');
 const availabilityRoutes = require('./routes/availabilityRoutes');
 const appointmentRoutes = require('./routes/appointmentRoutes');
+const notificationRoutes = require('./routes/notificationRoutes');
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/doctors', doctorRoutes);
 app.use('/api/availability', availabilityRoutes);
 app.use('/api/appointments', appointmentRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 // ===============================
 // Home Route
@@ -64,6 +66,42 @@ app.use((err, req, res, next) => {
     });
 });
 
+
+async function ensureNotificationSchema() {
+    const db = getDB();
+
+    await db.exec(`
+        CREATE TABLE IF NOT EXISTS notifications (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            appointment_id INTEGER,
+            title TEXT NOT NULL,
+            message TEXT NOT NULL,
+            type TEXT NOT NULL DEFAULT 'general',
+            is_read INTEGER NOT NULL DEFAULT 0,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        );
+
+        CREATE INDEX IF NOT EXISTS idx_notifications_user_read
+        ON notifications(user_id, is_read);
+
+        CREATE TABLE IF NOT EXISTS reminders (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            appointment_id INTEGER NOT NULL,
+            reminder_type TEXT NOT NULL,
+            scheduled_time DATETIME,
+            sent INTEGER NOT NULL DEFAULT 0,
+            sent_at DATETIME,
+            FOREIGN KEY (appointment_id) REFERENCES appointments(id) ON DELETE CASCADE
+        );
+    `);
+
+    const columns = await db.all("PRAGMA table_info(appointments)");
+    if (!columns.some(column => column.name === "reminder_sent")) {
+        await db.exec("ALTER TABLE appointments ADD COLUMN reminder_sent INTEGER NOT NULL DEFAULT 0");
+    }
+}
 // ===============================
 // Start Server
 // ===============================
@@ -73,6 +111,8 @@ const startServer = async () => {
     try {
 
         await initDB();
+        await ensureNotificationSchema();
+        require('./services/reminderScheduler').startReminderScheduler();
 
         app.listen(PORT, () => {
             console.log('===================================');

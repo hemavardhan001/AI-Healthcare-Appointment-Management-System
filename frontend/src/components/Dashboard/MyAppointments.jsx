@@ -10,6 +10,13 @@ function MyAppointments() {
     const [error, setError] = useState("");
     const [message, setMessage] = useState("");
     const [cancellingId, setCancellingId] = useState(null);
+    const [rescheduleId, setRescheduleId] = useState(null);
+    const [rescheduleDraft, setRescheduleDraft] = useState({
+        appointment_date: "",
+        start_time: "",
+        end_time: ""
+    });
+    const [savingRescheduleId, setSavingRescheduleId] = useState(null);
 
     // =======================================
     // GET TODAY'S LOCAL DATE
@@ -360,9 +367,9 @@ function MyAppointments() {
             case "completed":
                 return {
                     background:
-                        "#dbeafe",
+                        "#b7e7df",
                     color:
-                        "#1d4ed8"
+                        "#087f76"
                 };
 
             case "cancelled":
@@ -833,12 +840,23 @@ const buttonStyle = {
     padding: "10px 18px",
     border: "none",
     borderRadius: "8px",
-    background: "#2563eb",
+    background: "#0e9f91",
     color: "white",
     cursor: "pointer",
     fontSize: "14px"
 };
 
+const rescheduleInputStyle = {
+    display: "block",
+    width: "100%",
+    boxSizing: "border-box",
+    marginTop: "6px",
+    padding: "10px",
+    border: "1px solid #cbd5e1",
+    borderRadius: "7px",
+    fontSize: "14px",
+    background: "white"
+};
 const cardStyle = {
     background: "white",
     padding: "25px",

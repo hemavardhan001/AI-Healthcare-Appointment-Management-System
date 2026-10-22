@@ -1,43 +1,51 @@
-.register-container{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    background:#f5f7fb;
+﻿.med-register-page {
+  --reg-teal: #087f8c;
+  min-height: 100vh;
+  padding: 24px clamp(18px, 6vw, 85px) 16px;
+  background: linear-gradient(135deg, #f0faf8 0%, #fff 56%, #f4f8ff 100%);
+  color: #173c49;
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
 }
-
-.register-card{
-    width:400px;
-    background:white;
-    padding:40px;
-    border-radius:12px;
-    box-shadow:0 5px 20px rgba(0,0,0,.1);
-}
-
-.register-card h2{
-    text-align:center;
-    margin-bottom:25px;
-}
-
-.register-card input{
-    width:100%;
-    padding:12px;
-    margin:12px 0;
-    border:1px solid #ccc;
-    border-radius:6px;
-}
-
-.register-card button{
-    width:100%;
-    padding:12px;
-    background:#0077ff;
-    color:white;
-    border:none;
-    border-radius:6px;
-    cursor:pointer;
-    font-size:16px;
-}
-
-.register-card button:hover{
-    background:#005fd6;
+.med-register-page * { box-sizing: border-box; }
+.med-register-brand { display: inline-flex; align-items: center; gap: 10px; color: #153b4a; text-decoration: none; font-size: 25px; font-weight: 800; letter-spacing: -.8px; }
+.med-register-brand > span { display: grid; place-items: center; width: 37px; height: 37px; border-radius: 11px; background: #07838d; color: white; font-size: 22px; }
+.med-register-layout { width: 100%; max-width: 1080px; margin: 20px auto 15px; display: grid; grid-template-columns: .9fr 1.1fr; align-items: center; gap: 65px; }
+.med-register-welcome { padding: 20px 0; }
+.med-register-symbol { display: grid; place-items: center; width: 58px; height: 58px; margin-bottom: 25px; border-radius: 17px; background: #dff5f0; color: #07838d; font-size: 34px; }
+.med-register-kicker { display: inline-block; color: #07838d; font-size: 11px; font-weight: 800; letter-spacing: 1.8px; }
+.med-register-welcome h1 { margin: 16px 0; color: #173c49; font-size: clamp(36px, 4.2vw, 53px); line-height: 1.12; letter-spacing: -1.8px; }
+.med-register-welcome h1 span { color: #078b92; }
+.med-register-welcome > p { max-width: 430px; color: #6c8189; font-size: 14px; line-height: 1.85; }
+.med-register-note { display: flex; align-items: center; gap: 12px; margin-top: 30px; padding: 17px; max-width: 350px; border: 1px solid #e1efed; border-radius: 13px; background: #ffffffc9; }
+.med-register-note > span { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 11px; background: #e1f7f1; color: #07838d; font-size: 22px; }
+.med-register-note strong, .med-register-note small { display: block; }
+.med-register-note strong { font-size: 12px; color: #244b56; }
+.med-register-note small { margin-top: 5px; color: #7c9096; font-size: 11px; }
+.med-register-card { width: 100%; max-width: 475px; justify-self: end; padding: 31px 36px; border: 1px solid #e3eeee; border-radius: 20px; background: #fff; box-shadow: 0 20px 65px #16465312; }
+.med-register-card h2 { margin: 10px 0 7px; color: #173c49; font-size: 27px; letter-spacing: -.7px; }
+.med-register-subtitle { margin: 0 0 21px; color: #7a8d94; font-size: 12px; }
+.med-register-card label { display: block; margin-bottom: 7px; color: #294c57; font-size: 12px; font-weight: 700; }
+.med-register-card input:not([type="hidden"]) { display: block; width: 100%; height: 43px; margin-bottom: 15px; padding: 0 13px; border: 1px solid #dce7e9; border-radius: 9px; outline: none; color: #173c49; background: #fcfefe; font: inherit; font-size: 12px; }
+.med-register-card input::placeholder { color: #a0afb4; }
+.med-register-card input:focus { border-color: #078b92; box-shadow: 0 0 0 3px #078b9217; }
+.med-register-submit { display: flex; justify-content: center; align-items: center; gap: 12px; width: 100%; height: 47px; margin-top: 5px; border: 0; border-radius: 9px; color: white; background: #07838d; font-size: 13px; font-weight: 700; cursor: pointer; box-shadow: 0 8px 18px #07838d25; }
+.med-register-submit:hover { background: #066c76; }
+.med-register-submit:disabled { opacity: .65; cursor: wait; }
+.med-register-success, .med-register-error { margin: 0 0 12px; font-size: 12px; line-height: 1.5; }
+.med-register-success { color: #16815f; }
+.med-register-error { color: #c03939; }
+.med-register-switch { margin: 19px 0 0; text-align: center; color: #778b92; font-size: 12px; }
+.med-register-switch a { color: #07838d; text-decoration: none; font-weight: 800; }
+.med-register-home-link { display: block; margin-top: 17px; text-align: center; color: #71848b; text-decoration: none; font-size: 12px; }
+.med-register-home-link:hover { color: #07838d; }
+.med-register-footer { margin: 0; text-align: center; color: #91a0a5; font-size: 11px; }
+@media (max-width: 760px) {
+  .med-register-page { padding: 18px; }
+  .med-register-layout { grid-template-columns: 1fr; gap: 18px; margin-top: 16px; }
+  .med-register-welcome { padding: 10px 3px 0; }
+  .med-register-symbol { width: 43px; height: 43px; margin-bottom: 15px; font-size: 25px; border-radius: 13px; }
+  .med-register-welcome h1 { font-size: 36px; }
+  .med-register-welcome > p { font-size: 13px; }
+  .med-register-note { display: none; }
+  .med-register-card { justify-self: center; padding: 27px 22px; }
 }

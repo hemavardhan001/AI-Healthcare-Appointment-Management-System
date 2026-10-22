@@ -1,6 +1,6 @@
 .doctor-dashboard {
   min-height: 100vh;
-  background: #f5f7fb;
+  background: #f4fbfa;
   padding: 30px;
 }
 
@@ -105,8 +105,8 @@
 }
 
 .action-grid button:hover {
-  background: #eff6ff;
-  border-color: #2563eb;
+  background: #f0f9f8;
+  border-color: #0e9f91;
 }
 
 .action-grid span {
@@ -144,7 +144,7 @@
 }
 
 .section-header button {
-  background: #2563eb;
+  background: #0e9f91;
   color: white;
   border: none;
   padding: 9px 15px;
@@ -177,7 +177,7 @@
 .appointment-time strong {
   display: block;
   font-size: 17px;
-  color: #2563eb;
+  color: #0e9f91;
 }
 
 .appointment-time span {
@@ -211,8 +211,8 @@
 }
 
 .status.scheduled {
-  background: #dbeafe;
-  color: #1d4ed8;
+  background: #b7e7df;
+  color: #087f76;
 }
 
 .status.completed {

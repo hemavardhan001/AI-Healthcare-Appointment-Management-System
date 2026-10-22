@@ -25,7 +25,7 @@
 }
 
 .specialization{
-    color:#2563eb;
+    color:#0e9f91;
     font-weight:bold;
     margin:10px 0;
 }
@@ -38,7 +38,7 @@
 
 .book-btn{
     margin-top:15px;
-    background:#2563eb;
+    background:#0e9f91;
     color:white;
     border:none;
     padding:12px 25px;
@@ -48,5 +48,5 @@
 }
 
 .book-btn:hover{
-    background:#1d4ed8;
+    background:#087f76;
 }

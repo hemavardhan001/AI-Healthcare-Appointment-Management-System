@@ -41,7 +41,7 @@
 
 .edit-profile-btn {
     border: none;
-    background: #2563eb;
+    background: #0e9f91;
     color: white;
     padding: 11px 18px;
     border-radius: 8px;
@@ -59,7 +59,7 @@
 }
 
 .edit-profile-btn:hover {
-    background: #1d4ed8;
+    background: #087f76;
     transform: translateY(-1px);
     box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
 }
@@ -96,7 +96,7 @@
     justify-content: center;
 
     border-radius: 50%;
-    background: #dbeafe;
+    background: #b7e7df;
 
     font-size: 42px;
 }
@@ -159,7 +159,7 @@
     align-items: center;
     justify-content: center;
 
-    background: #eff6ff;
+    background: #f0f9f8;
     border-radius: 9px;
 
     font-size: 20px;
@@ -227,7 +227,7 @@
 }
 
 .profile-form input:focus {
-    border-color: #2563eb;
+    border-color: #0e9f91;
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 

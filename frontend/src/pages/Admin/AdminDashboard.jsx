@@ -54,7 +54,7 @@ const AdminDashboard = () => {
         <div
             style={{
                 minHeight: "100vh",
-                background: "#f5f7fb",
+                background: "#f4fbfa",
                 padding: "30px"
             }}
         >
@@ -144,7 +144,7 @@ const AdminDashboard = () => {
                             padding: "8px 15px",
                             border: "none",
                             borderRadius: "5px",
-                            background: "#007bff",
+                            background: "#0e9f91",
                             color: "white",
                             cursor: "pointer"
                         }}
