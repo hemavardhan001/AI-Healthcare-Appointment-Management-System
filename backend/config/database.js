@@ -1,32 +1,125 @@
-const sqlite3 = require('sqlite3').verbose();
-const { open } = require('sqlite');
-const path = require('path');
 
-let db;
+const { Pool } = require("pg");
+
+let pool;
+
+function convertPlaceholders(sql) {
+  let index = 0;
+  let result = "";
+  let inSingleQuote = false;
+  let inDoubleQuote = false;
+
+  for (let i = 0; i < sql.length; i++) {
+    const char = sql[i];
+
+    if (char === "'" && !inDoubleQuote) {
+      if (inSingleQuote && sql[i + 1] === "'") {
+        result += "''";
+        i++;
+        continue;
+      }
+
+      inSingleQuote = !inSingleQuote;
+      result += char;
+      continue;
+    }
+
+    if (char === '"' && !inSingleQuote) {
+      inDoubleQuote = !inDoubleQuote;
+      result += char;
+      continue;
+    }
+
+    if (char === "?" && !inSingleQuote && !inDoubleQuote) {
+      index++;
+      result += "$" + index;
+    } else {
+      result += char;
+    }
+  }
+
+  return result;
+}
+
+const db = {
+  async get(sql, params = []) {
+    const result = await pool.query(
+      convertPlaceholders(sql),
+      params
+    );
+
+    return result.rows[0];
+  },
+
+  async all(sql, params = []) {
+    const result = await pool.query(
+      convertPlaceholders(sql),
+      params
+    );
+
+    return result.rows;
+  },
+
+  async run(sql, params = []) {
+    const result = await pool.query(
+      convertPlaceholders(sql),
+      params
+    );
+
+    return {
+      lastID: result.rows[0]?.id ?? null,
+      changes: result.rowCount ?? 0,
+      rowCount: result.rowCount ?? 0,
+    };
+  },
+
+  async exec(sql) {
+    return pool.query(sql);
+  },
+};
 
 const initDB = async () => {
-  const dbPath = process.env.DB_PATH ||
-    path.join(__dirname, '../database/appointment.db');
+  if (!process.env.DATABASE_URL) {
+    throw new Error(
+      "DATABASE_URL is missing. Configure it in the backend environment."
+    );
+  }
 
-  db = await open({
-    filename: dbPath,
-    driver: sqlite3.Database,
+  pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false,
+    },
+    connectionTimeoutMillis: 10000,
   });
 
-  await db.run('PRAGMA foreign_keys = ON');
+  pool.on("error", (error) => {
+    console.error(
+      "Unexpected PostgreSQL pool error:",
+      error.message
+    );
+  });
 
-  console.log('Connected to SQLite database:', dbPath);
+  try {
+    await pool.query("SELECT 1");
+    console.log("Connected to PostgreSQL database");
+  } catch (error) {
+    await pool.end().catch(() => {});
+    pool = undefined;
+    throw error;
+  }
+
   return db;
 };
 
 const getDB = () => {
-  if (!db) {
-    throw new Error('Database not initialized. Call initDB() first.');
+  if (!pool) {
+    throw new Error(
+      "Database not initialized. Call initDB() first."
+    );
   }
+
   return db;
 };
 
-module.exports = {
-  initDB,
-  getDB,
-};
+module.exports = { initDB, getDB };

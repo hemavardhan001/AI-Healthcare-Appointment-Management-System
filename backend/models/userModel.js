@@ -1,86 +1,88 @@
-const { getDB } = require('../config/database');
 
+const { getDB } = require("../config/database");
+
+// Create User
 const createUser = async (user) => {
-    const db = getDB();
+  const db = getDB();
 
-    const result = await db.run(
-        `INSERT INTO users (name, email, password, phone, role)
-         VALUES (?, ?, ?, ?, ?)`,
-        [
-            user.name,
-            user.email,
-            user.password,
-            user.phone,
-            user.role
-        ]
-    );
+  const result = await db.run(
+    `INSERT INTO users (name, email, password, phone, role)
+     VALUES (?, ?, ?, ?, ?)
+     RETURNING id`,
+    [
+      user.name,
+      user.email,
+      user.password,
+      user.phone,
+      user.role,
+    ]
+  );
 
-    return result.lastID;
+  return result.lastID;
 };
 
+// Find User by Email
 const findUserByEmail = async (email) => {
-    const db = getDB();
+  const db = getDB();
 
-    return await db.get(
-        `SELECT * FROM users WHERE email = ?`,
-        [email]
-    );
+  return db.get(
+    `SELECT * FROM users WHERE email = ?`,
+    [email]
+  );
 };
 
+// Find User by ID
 const findUserById = async (id) => {
-    const db = getDB();
+  const db = getDB();
 
-    return await db.get(
-        `SELECT
-            u.id,
-            u.name,
-            u.email,
-            u.phone,
-            u.role,
-            u.created_at,
-            d.id AS doctor_id,
-            d.specialization
-         FROM users u
-         LEFT JOIN doctors d
-            ON d.user_id = u.id
-         WHERE u.id = ?`,
-        [id]
-    );
+  return db.get(
+    `SELECT
+       u.id,
+       u.name,
+       u.email,
+       u.phone,
+       u.role,
+       u.created_at,
+       d.id AS doctor_id,
+       d.specialization
+     FROM users u
+     LEFT JOIN doctors d ON d.user_id = u.id
+     WHERE u.id = ?`,
+    [id]
+  );
 };
 
-// ===============================
 // Update User Profile
-// ===============================
 const updateUserProfile = async (id, user) => {
-    const db = getDB();
+  const db = getDB();
 
-    return await db.run(
-        `UPDATE users
-         SET
-            name = ?,
-            email = ?,
-            phone = ?
-         WHERE id = ?`,
-        [
-            user.name,
-            user.email,
-            user.phone,
-            id
-        ]
-    );
+  return db.run(
+    `UPDATE users
+     SET name = ?, email = ?, phone = ?
+     WHERE id = ?`,
+    [
+      user.name,
+      user.email,
+      user.phone,
+      id,
+    ]
+  );
 };
+
+// Update User Password
 const updateUserPassword = async (id, password) => {
-    const db = getDB();
+  const db = getDB();
 
-    return await db.run(
-        `UPDATE users SET password = ? WHERE id = ?`,
-        [password, id]
-    );
+  return db.run(
+    `UPDATE users SET password = ? WHERE id = ?`,
+    [password, id]
+  );
 };
+
 module.exports = {
-    createUser,
-    findUserByEmail,
-    findUserById,
-    updateUserProfile,
-    updateUserPassword
+  createUser,
+  findUserByEmail,
+  findUserById,
+  updateUserProfile,
+  updateUserPassword,
 };

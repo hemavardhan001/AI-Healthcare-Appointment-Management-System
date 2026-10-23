@@ -1,28 +1,38 @@
 
 const { getDB } = require("../config/database");
 
+// Create Notification
 const createNotification = async ({
   user_id,
   appointment_id = null,
   title,
   message,
-  type = "general"
+  type = "general",
 }) => {
   const db = getDB();
 
   return db.run(
     `INSERT INTO notifications
       (user_id, appointment_id, title, message, type)
-     VALUES (?, ?, ?, ?, ?)`,
+     VALUES (?, ?, ?, ?, ?)
+     RETURNING id`,
     [user_id, appointment_id, title, message, type]
   );
 };
 
+// Get User Notifications
 const getUserNotifications = async (userId) => {
   const db = getDB();
 
   return db.all(
-    `SELECT id, appointment_id, title, message, type, is_read, created_at
+    `SELECT
+       id,
+       appointment_id,
+       title,
+       message,
+       type,
+       is_read,
+       created_at
      FROM notifications
      WHERE user_id = ?
      ORDER BY created_at DESC, id DESC
@@ -31,6 +41,7 @@ const getUserNotifications = async (userId) => {
   );
 };
 
+// Get Unread Notification Count
 const getUnreadCount = async (userId) => {
   const db = getDB();
 
@@ -41,9 +52,10 @@ const getUnreadCount = async (userId) => {
     [userId]
   );
 
-  return result.count;
+  return Number(result.count);
 };
 
+// Mark Notification as Read
 const markNotificationRead = async (notificationId, userId) => {
   const db = getDB();
 
@@ -59,5 +71,5 @@ module.exports = {
   createNotification,
   getUserNotifications,
   getUnreadCount,
-  markNotificationRead
+  markNotificationRead,
 };

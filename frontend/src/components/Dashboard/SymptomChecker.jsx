@@ -3,7 +3,10 @@ import API from "../../services/api";
 import "./PatientTheme.css";
 import "./SymptomChecker.css";
 
-const AI_URL = import.meta.env.VITE_AI_API_URL || "http://localhost:5001";
+const AI_URL = (
+  import.meta.env.VITE_AI_API_URL ||
+  "https://ams-ai-service.onrender.com"
+).replace(/\/+$/, "");
 
 function SymptomChecker() {
   const [symptoms, setSymptoms] = useState("");
@@ -18,6 +21,7 @@ function SymptomChecker() {
 
   const analyze = async (event) => {
     event.preventDefault();
+
     setMessage("");
     setSpecialization("");
     setDoctors([]);
@@ -36,40 +40,84 @@ function SymptomChecker() {
     try {
       const response = await fetch(`${AI_URL}/api/analyze`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ symptoms: symptoms.trim() }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          symptoms: symptoms.trim(),
+        }),
       });
 
-      const result = await response.json();
+      let result;
 
-      if (!response.ok || !result.success) {
-        throw new Error(result.message || "Unable to analyze symptoms.");
+      try {
+        result = await response.json();
+      } catch {
+        throw new Error(
+          "The AI service returned an invalid response. Please try again."
+        );
       }
 
-      setSpecialization(result.recommended_specialization || "");
-      setGuidance(result.guidance || "Please consult a qualified healthcare professional.");
-      setNextSteps(Array.isArray(result.next_steps) ? result.next_steps : []);
-      setDisclaimer(result.disclaimer || "This is general information, not a diagnosis.");
+      if (!response.ok || !result.success) {
+        throw new Error(
+          result.message || `AI service error (${response.status}).`
+        );
+      }
+
+      const recommendedSpecialization = (
+        result.recommended_specialization || ""
+      ).trim();
+
+      setSpecialization(recommendedSpecialization);
+      setGuidance(
+        result.guidance ||
+          "Please consult a qualified healthcare professional."
+      );
+      setNextSteps(
+        Array.isArray(result.next_steps) ? result.next_steps : []
+      );
+      setDisclaimer(
+        result.disclaimer ||
+          "This is general information, not a diagnosis."
+      );
       setUrgent(Boolean(result.urgent));
 
+      // Fetch matching doctors from the main backend.
       try {
         const doctorResponse = await API.get("/doctors");
         const data = doctorResponse.data;
-        const allDoctors = Array.isArray(data) ? data : (data.doctors || []);
-        const recommended = (result.recommended_specialization || "").trim().toLowerCase();
+
+        const allDoctors = Array.isArray(data)
+          ? data
+          : Array.isArray(data?.doctors)
+            ? data.doctors
+            : [];
+
+        const recommended =
+          recommendedSpecialization.toLowerCase();
 
         setDoctors(
           allDoctors.filter(
             (doctor) =>
-              doctor.specialization?.trim().toLowerCase() === recommended
+              (doctor.specialization || "")
+                .trim()
+                .toLowerCase() === recommended
           )
         );
-      } catch {
-        setMessage("AI guidance received, but doctor listings could not be loaded.");
+      } catch (error) {
+        console.error("Could not load doctors:", error);
+        setMessage(
+          "AI guidance received, but doctor listings could not be loaded."
+        );
       }
     } catch (error) {
+      console.error("AI symptom analysis failed:", error);
+
       setMessage(
-        error.message || "Could not connect to the AI service. Check that it is running."
+        error instanceof TypeError
+          ? "Could not connect to the AI service. Please check the AI service URL and CORS settings."
+          : error.message ||
+              "Could not connect to the AI service. Please try again."
       );
     } finally {
       setLoading(false);
@@ -79,15 +127,21 @@ function SymptomChecker() {
   return (
     <section className="symptom-checker">
       <div className="assistant-heading">
-        <span className="assistant-icon" aria-hidden="true">✚</span>
+        <span className="assistant-icon" aria-hidden="true">
+          ✚
+        </span>
+
         <div>
           <h1>AI Health Assistant</h1>
-          <p>Get general health guidance and a suggested medical specialty.</p>
+          <p>
+            Get general health guidance and a suggested medical specialty.
+          </p>
         </div>
       </div>
 
       <form onSubmit={analyze}>
         <label htmlFor="symptoms">How are you feeling?</label>
+
         <textarea
           id="symptoms"
           rows="5"
@@ -97,15 +151,21 @@ function SymptomChecker() {
           maxLength={2000}
           required
         />
+
         <div className="assistant-form-footer">
           <small>{symptoms.length}/2000 characters</small>
+
           <button type="submit" disabled={loading}>
             {loading ? "Analyzing..." : "Get Health Guidance"}
           </button>
         </div>
       </form>
 
-      {message && <p role="alert" className="symptom-message">{message}</p>}
+      {message && (
+        <p role="alert" className="symptom-message">
+          {message}
+        </p>
+      )}
 
       {urgent && (
         <div className="symptom-warning" role="alert">
@@ -120,13 +180,17 @@ function SymptomChecker() {
 
       {specialization && (
         <div className="symptom-result" aria-live="polite">
-          <span className="assistant-result-label">YOUR GENERAL GUIDANCE</span>
+          <span className="assistant-result-label">
+            YOUR GENERAL GUIDANCE
+          </span>
+
           <h2>Suggested specialty: {specialization}</h2>
           <p>{guidance}</p>
 
           {nextSteps.length > 0 && (
             <>
               <h3>Suggested next steps</h3>
+
               <ul className="assistant-steps">
                 {nextSteps.map((step, index) => (
                   <li key={`${index}-${step}`}>{step}</li>
@@ -136,8 +200,12 @@ function SymptomChecker() {
           )}
 
           <h3>Matching doctors</h3>
+
           {doctors.length === 0 ? (
-            <p>No exact specialty matches were found. You can browse the Doctors section.</p>
+            <p>
+              No exact specialty matches were found. You can browse the Doctors
+              section.
+            </p>
           ) : (
             <ul className="assistant-doctors">
               {doctors.map((doctor) => (
@@ -145,6 +213,7 @@ function SymptomChecker() {
                   <strong>Dr. {doctor.name}</strong>
                   {" — "}
                   {doctor.specialization}
+
                   {doctor.experience_years !== undefined &&
                     ` · ${doctor.experience_years} years experience`}
                 </li>

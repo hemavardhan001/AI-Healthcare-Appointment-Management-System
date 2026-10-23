@@ -42,3 +42,9 @@ npm-debug.log*
 # OS and editor files
 .DS_Store
 .vscode/
+node_modules/
+.env
+.env.*
+!.env.example
+backend/database/*.db
+backend/database/*.db-*
